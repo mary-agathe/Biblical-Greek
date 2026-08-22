@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblical Greek Vocabulary Reviewer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%23f0ece1%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2242%22 fill=%22none%22 stroke=%22%232c2c2c%22 stroke-width=%223%22/%3E%3Ctext x=%2250%22 y=%2262%22 text-anchor=%22middle%22 font-size=%2256%22 font-family=%22Georgia, serif%22 font-weight=%22700%22 fill=%22%232c2c2c%22%3E%CE%B1%3C/text%3E%3C/svg%3E" />
+<link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%23f0ece1%22/%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2242%22 fill=%22none%22 stroke=%22%232c2c2c%22 stroke-width=%223%22/%3E%3Ctext x=%2250%22 y=%2262%22 text-anchor=%22middle%22 font-size=%2256%22 font-family=%22Georgia, serif%22 font-weight=%22700%22 fill=%22%232c2c2c%22%3E%CE%B1%3C/text%3E%3C/svg%3E" />
+<meta name="theme-color" content="#2c2c2c">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Noto+Sans:wght@300;400;500;600&family=GFS+Didot&display=swap" rel="stylesheet">
+<style>
+:root {
+    /* Typewriter Palette */
+    --ink: #2c2c2c;
+    --parchment: #f0ece1;
+    --warm-mid: #e4decb;
+    --accent-terracotta: #4a4a4a;
+    --accent-gold: #ffffff;
+    --accent-deep: #1a1a1a;
+    --greek-blue: #2c2c2c;
+    --greek-blue-hover: #000000;
+    --muted: #5e5e5e;
+    --tag-bg: #dcd4be;
+    --border: #2c2c2c;
+    --correct-bg: #d8e0cc;
+    --correct-border: #425233;
+    --incorrect-bg: #e6cece;
+    --incorrect-border: #753b3b;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cutive', serif !important; }
+  body { 
+    background: var(--parchment); 
+    color: var(--ink); 
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .screen { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: flex-start; }
+  .screen.active { display: flex; }
+
+  /* HOME SCREEN */
+  #screen-home { 
+    background: var(--parchment);
+    justify-content: center; 
+  }
+  .home-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .home-logo { 
+    font-size: 56px; 
+    color: var(--ink); 
+    letter-spacing: 2px; 
+    margin-bottom: 8px; 
+    text-align: center;
+    font-weight: bold;
+  }
+  .home-title { 
+    font-size: 20px; 
+    color: var(--ink); 
+    letter-spacing: 2px; 
+    margin-bottom: 40px; 
+    text-align: center; 
+    padding: 0 20px;
+  }
+  .home-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 850px; padding: 20px; }
+  .home-card { 
+    background: var(--parchment); 
+    border: 2px solid var(--ink); 
+    box-shadow: 4px 4px 0px var(--ink);
+    border-radius: 0px; 
+    padding: 30px; 
+    text-align: center; 
+    cursor: pointer; 
+    transition: transform 0.1s, box-shadow 0.1s; 
+    flex: 1; 
+    min-width: 220px; 
+  }
+  .home-card:hover { 
+    background: var(--warm-mid);
+    transform: translate(2px, 2px); 
+    box-shadow: 2px 2px 0px var(--ink);
+  }
+  .home-card-icon { font-size: 34px; color: var(--ink); margin-bottom: 12px; font-weight: bold; }
+  .home-card-label { font-size: 18px; color: var(--ink); margin-bottom: 6px; font-weight: bold; }
+  .home-card-sub { font-size: 13px; color: var(--muted); }
+
+  /* TOP BAR */
+  .topbar { 
+    width: 100%; 
+    background: var(--accent-deep); 
+    color: #f0ece1; 
+    padding: 14px 24px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 10; 
+    border-bottom: 3px solid var(--ink);
+  }
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+  }
+  .back-btn { 
+    background: transparent; 
+    border: 1px solid #f0ece1; 
+    color: #f0ece1; 
+    padding: 6px 14px; 
+    border-radius: 0px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    transition: all 0.1s; 
+  }
+  .back-btn:hover { background: #f0ece1; color: var(--accent-deep); }
+  
+  .content-area { width: 100%; max-width: 850px; margin-top: 75px; padding: 25px 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+  .screen-title { font-size: 28px; color: var(--ink); margin-bottom: 16px; text-align: center; font-weight: bold; line-height: 1.2; max-width: 100%; overflow-wrap: anywhere;}
+
+  /* TABS */
+  .tab-container { display: flex; gap: 10px; margin-bottom: 24px; background: var(--warm-mid); padding: 4px; border: 2px solid var(--ink); border-radius: 0; }
+  .tab-btn { background: transparent; border: none; padding: 8px 20px; font-weight: bold; cursor: pointer; color: var(--ink); font-size: 15px; }
+  .tab-btn.active { background: var(--parchment); color: var(--ink); border: 2px solid var(--ink); }
+
+  /* CHAPTER / LIST SELECTION GRID */
+  .section-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; width: 100%; }
+  .section-btn { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 3px 3px 0px var(--ink); border-radius: 0px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.1s; }
+  .section-btn:hover { background: var(--warm-mid); transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--ink); }
+  .section-btn .sec-name { font-size: 17px; font-weight: bold; color: var(--ink); }
+  .section-btn .sec-count { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* MULTI SELECTION */
+  .multi-controls { display: flex; gap: 10px; margin-bottom: 16px; width: 100%; justify-content: center; flex-wrap: wrap; }
+  .sec-action-btn { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); color: var(--ink); padding: 6px 14px; border-radius: 0px; font-size: 13px; cursor: pointer; font-weight: bold; transition: 0.1s;}
+  .sec-action-btn:hover { background: var(--warm-mid); transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--ink);}
+  
+  .multi-ch-list { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); border-radius: 0px; width: 100%; max-width: 650px; padding: 20px; margin-bottom: 24px; max-height: 50vh; overflow-y: auto; }
+  .group-title { color: var(--ink); font-size: 16px; font-weight: bold; margin: 12px 0 8px 0; border-bottom: 2px dashed var(--ink); padding-bottom: 4px; }
+  .ch-checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .ch-checkbox-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; font-size: 15px; color: var(--ink); cursor: pointer; transition: background 0.15s; }
+  .ch-checkbox-row:hover { background: var(--warm-mid); }
+  .ch-checkbox-row input { transform: scale(1.2); cursor: pointer; accent-color: var(--ink); }
+
+  .primary-btn { background: var(--ink); color: var(--parchment); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--muted); border-radius: 0px; padding: 14px 28px; font-size: 16px; cursor: pointer; transition: 0.1s; font-weight: bold;}
+  .primary-btn:hover { background: var(--accent-deep); transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--muted);}
+  .secondary-btn { background: var(--parchment); color: var(--ink); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); border-radius: 0px; padding: 14px 28px; font-size: 16px; cursor: pointer; transition: 0.1s; font-weight: bold;}
+  .secondary-btn:hover { background: var(--warm-mid); transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--ink);}
+
+  .action-group { display: flex; gap: 12px; justify-content: center; width: 100%; max-width: 500px; }
+
+  /* FLASHCARD UI */
+  .flashcard-container { width: 100%; max-width: 520px; perspective: 1000px; margin-bottom: 24px; position: relative; }
+  .flashcard { width: 100%; height: 320px; position: relative; transition: transform 0.4s; transform-style: preserve-3d; cursor: pointer; }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; box-shadow: 6px 6px 0px var(--ink); border: 3px solid var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; background: var(--parchment); border-radius: 0; }
+  .card-back { transform: rotateY(180deg); background: var(--warm-mid); }
+  
+  .fc-greek { font-size: 46px; color: var(--ink); margin-bottom: 12px; line-height: 1.2; font-weight: bold;}
+  .fc-english { font-size: 24px; color: var(--ink); font-weight: bold; margin-bottom: 16px; line-height: 1.4; }
+  .fc-meta { background: var(--tag-bg); border: 1px solid var(--ink); color: var(--ink); font-size: 13px; font-weight: bold; padding: 4px 14px; border-radius: 0px; }
+
+  /* STAR BUTTON */
+  .star-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 28px; cursor: pointer; color: var(--muted); transition: all 0.2s; z-index: 5; }
+  .star-btn.active { color: #ffa44c; }
+  .star-btn:hover { transform: scale(1.15); }
+
+  /* SHUFFLE TOGGLE SWITCH */
+  .shuffle-switch-container { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; color: #f0ece1; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 22px; border: 2px solid #f0ece1; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: transparent; transition: .3s; }
+  .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: #f0ece1; transition: .3s; }
+  input:checked + .slider { background-color: var(--muted); }
+  input:checked + .slider:before { transform: translateX(16px); }
+
+  /* CONTROLS */
+  .fc-controls { display: flex; gap: 14px; width: 100%; max-width: 520px; justify-content: space-between; }
+  .ctrl-btn { flex: 1; background: var(--parchment); border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); color: var(--ink); padding: 12px; border-radius: 0px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.1s; }
+  .ctrl-btn:hover { background: var(--warm-mid); transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--ink); }
+  .ctrl-btn.flip { background: var(--ink); color: var(--parchment); }
+  .ctrl-btn.flip:hover { background: var(--accent-deep); }
+
+  .key-hint { margin-top: 18px; font-size: 12px; color: var(--muted); text-align: center; }
+  .progress-text { font-size: 15px; font-weight: bold; letter-spacing: 1px;}
+
+  /* LIST TEST MODE STYLES */
+  .test-list-container { width: 100%; max-width: 750px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+  .test-row { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 3px 3px 0px var(--ink); border-radius: 0px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; }
+  .test-row.correct { background-color: var(--correct-bg); border-color: var(--correct-border); }
+  .test-row.incorrect { background-color: var(--incorrect-bg); border-color: var(--incorrect-border); }
+
+  .test-left { display: flex; align-items: center; gap: 18px; }
+  .test-num { font-size: 14px; color: var(--muted); font-weight: bold; min-width: 20px; }
+  .test-greek { font-size: 26px; color: var(--ink); font-weight: bold; }
+  
+  .test-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .test-select { background: var(--parchment); border: 2px solid var(--ink); border-radius: 0px; padding: 8px 12px; font-size: 14px; color: var(--ink); outline: none; cursor: pointer; min-width: 220px; max-width: 340px; font-weight: bold;}
+  .test-select:focus { background: var(--warm-mid); }
+  .test-star-btn { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--muted); transition: transform 0.2s; }
+  .test-star-btn.active { color:#ffa44c; }
+  .test-star-btn:hover { transform: scale(1.1); }
+
+  /* MODE SELECTION MODAL */
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 44, 44, 0.8); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+  .modal-overlay.active { display: flex; }
+  .modal-card { background: var(--parchment); border: 3px solid var(--ink); box-shadow: 8px 8px 0px var(--ink); border-radius: 0px; padding: 30px; width: 90%; max-width: 420px; text-align: center; }
+  .modal-title { font-size: 22px; color: var(--ink); margin-bottom: 8px; font-weight: bold;}
+  .modal-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .modal-buttons { display: flex; flex-direction: column; gap: 12px; }
+
+  /* PARADIGM REVIEW */
+  .paradigm-intro { max-width: 720px; text-align: center; color: var(--ink); margin: -6px 0 22px; font-weight: bold;}
+  .paradigm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; width: 100%; }
+  .paradigm-card { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 3px 3px 0px var(--ink); border-radius: 0px; padding: 18px; text-align: left; cursor: pointer; transition: .1s; }
+  .paradigm-card:hover, .paradigm-card.selected { background: var(--warm-mid); transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--ink); }
+  .paradigm-card h3 { color: var(--ink); font-size: 18px; margin-bottom: 4px; font-weight: bold;}
+  .paradigm-card p { color: var(--muted); font-size: 13px; font-weight: bold;}
+  .paradigm-controls { width: 100%; max-width: 760px; background: var(--parchment); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); border-radius: 0px; padding: 18px; margin: 22px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .paradigm-controls label { color: var(--ink); font-size: 13px; font-weight: bold; }.paradigm-controls select { width: 100%; margin-top: 4px; padding: 9px; border: 2px solid var(--ink); border-radius: 0px; background: var(--parchment); font-weight: bold;}
+  .family-tabs { display:flex; gap:8px; margin-bottom:18px; background:var(--warm-mid); border: 2px solid var(--ink); padding:4px; }.family-tabs button { border:0; background:transparent; color:var(--ink); padding:9px 20px; font-weight:700; cursor:pointer; }.family-tabs button.active { background:var(--parchment); color:var(--ink); border: 2px solid var(--ink); }
+  .tense-picker { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:8px; padding:10px; background:var(--parchment); border:2px dashed var(--ink); }.tense-picker[hidden] { display:none; }.tense-picker strong { width:100%; color:var(--ink); font-size:13px; }.tense-picker label { display:flex; align-items:center; gap:5px; border:2px solid var(--ink); padding:4px 7px; background:var(--parchment); font-size:12px; font-weight: bold; cursor:pointer; }
+  .function-menu { position: relative; }.function-menu summary { list-style: none; cursor: pointer; border: 1px solid #f0ece1; padding: 6px 14px; }.function-menu summary::-webkit-details-marker { display: none; }.function-menu[open] summary { background: #f0ece1; color: var(--accent-deep); }.function-menu-panel { position: absolute; right: 0; top: calc(100% + 8px); min-width: 190px; padding: 12px; background: var(--parchment); color: var(--ink); border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); z-index: 20; }.function-switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: bold; }.function-switch + .function-switch { margin-top: 10px; }.function-switch input { appearance: none; width: 36px; height: 20px; border: 2px solid var(--ink); background: var(--parchment); cursor: pointer; position: relative; }.function-switch input::before { content: ''; position: absolute; width: 12px; height: 12px; left: 2px; top: 2px; background: var(--ink); transition: transform .2s; }.function-switch input:checked { background: var(--ink); }.function-switch input:checked::before { background: var(--parchment); transform: translateX(16px); }
+  .fill-select { width:100%; min-width:118px; padding:6px; border:2px solid var(--ink); background:var(--parchment); font-size: 18px; color:var(--ink); font-weight: bold; }.fill-select.correct { border:2px solid var(--correct-border); background:var(--correct-bg); }.fill-select.incorrect { border:2px solid var(--incorrect-border); background:var(--incorrect-bg); }
+  .chart-wrap { width: 100%; max-width: 900px; overflow-x: auto; background: var(--parchment); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); margin: 16px 0 26px; }
+  .study-table { width: 100%; border-collapse: collapse; min-width: 520px; }.study-table th { background: var(--ink); color: #f0ece1; text-align: left; padding: 9px 11px; font-size: 13px; border: 1px solid var(--ink);}.study-table td { border: 1px solid var(--ink); padding: 9px 11px; font-size: 15px; font-weight: bold; }.study-table tr:nth-child(even) { background: var(--warm-mid); }
+  .greek-form { font-size: 22px; color: var(--ink); font-weight: bold; }.study-form.word-hidden { color: transparent; text-shadow: 0 0 8px rgba(44,44,44,.5); user-select: none; }
+  .quiz-card { width: 100%; max-width: 680px; background: var(--parchment); border: 3px solid var(--ink); box-shadow: 6px 6px 0px var(--ink); padding: 26px; text-align: center; }
+  .quiz-meta { color: var(--ink); font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: .6px; border-bottom: 2px dashed var(--ink); display: inline-block; padding-bottom: 4px;}
+  .quiz-prompt { font-size: 25px; font-weight: bold; color: var(--ink); margin: 12px 0 20px; }
+  .quiz-select { width: 100%; padding: 13px; border: 2px solid var(--ink); font-size: 24px; color: var(--ink); background: var(--parchment); font-weight: bold; box-shadow: inset 2px 2px 0px var(--warm-mid); }
+  .quiz-feedback { min-height: 44px; margin: 16px 0 6px; font-weight: bold; }.quiz-feedback.correct { color: var(--correct-border); }.quiz-feedback.incorrect { color: var(--incorrect-border); }
+  .quiz-progress { width: 100%; max-width: 680px; height: 12px; background: var(--parchment); border: 2px solid var(--ink); margin: 16px 0 8px; }.quiz-progress > div { height: 100%; background: var(--ink); transition: width .2s; }
+  .missed-list { width: 100%; max-width: 680px; margin-top: 20px; text-align: left; }.missed-list li { background: var(--incorrect-bg); border: 2px solid var(--incorrect-border); list-style: none; margin: 7px 0; padding: 9px 12px; font-weight: bold;}
+  
+  @media (max-width: 560px) {
+    .content-area { width: 100%; padding: 20px 12px; }
+    .topbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; padding: 12px 10px; min-height: 62px; }
+    .topbar-brand { min-width: 0; justify-content: center; text-align: center; font-size: 15px; line-height: 1.2; overflow-wrap: anywhere; }
+    .back-btn { padding: 6px 10px; font-size: 13px; }
+    .home-title { max-width: 340px; font-size: 16px; line-height: 1.35; letter-spacing: 1px; margin-bottom: 24px; }
+    .home-cards { width: 100%; flex-direction: column; align-items: stretch; padding: 12px; gap: 12px; }
+    .home-card { width: 100%; min-width: 0; padding: 18px 14px; }
+    #screen-home .home-card { padding: 14px 12px; }
+    #screen-home .home-card-icon { margin-bottom: 6px; font-size: 28px; }
+    #screen-home .home-card-label { font-size: 16px; }
+    #screen-home .home-card-sub { font-size: 12px; }
+    .home-card-label { font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+    .home-card-sub { line-height: 1.35; }
+    .screen-title { width: 100%; font-size: 30px; line-height: 1.15; margin-bottom: 12px; }
+    .paradigm-intro { max-width: 100%; font-size: 16px; line-height: 1.4; }
+    .section-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .section-btn { padding: 13px 6px; }
+    .section-btn .sec-name { font-size: 15px; }
+    .paradigm-controls { grid-template-columns: 1fr; }
+    .quiz-card { padding: 20px 14px; }
+    .test-list-container { gap: 10px; }
+    .test-row { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 12px; }
+    .test-left { min-width: 0; gap: 10px; }
+    .test-num { min-width: 18px; }
+    .test-greek { min-width: 0; font-size: 22px; overflow-wrap: anywhere; }
+    .test-right { width: 100%; align-items: stretch; }
+    .test-select { width: 100%; min-width: 0; max-width: none; font-size: 14px; }
+    .fc-greek { max-width: 100%; font-size: 34px; overflow-wrap: anywhere; }
+    .flashcard { height: 270px; }
+    .card-face { padding: 20px 14px; }
+    .fc-controls { gap: 7px; }
+    .ctrl-btn { padding: 10px 6px; font-size: 13px; }
+    .key-hint { padding: 0 8px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HOME SCREEN -->
+  <div id="screen-home" class="screen active">
+    <div class="home-logo-container">
+      <div class="home-logo">Λεξιλόγιο</div>
+    </div>
+    <div class="home-title">Biblical Greek Not Easy<br>Greek I-II Review</div>
+    <div class="home-cards">
+      <div class="home-card" onclick="goTo('vocab-home')">
+        <div class="home-card-icon">Λ</div>
+        <div class="home-card-label">Vocabulary Review</div>
+        <div class="home-card-sub">Flashcards, tests, sections, and saved words</div>
+      </div>
+      <div class="home-card" onclick="goTo('paradigm-home')">
+        <div class="home-card-icon">Π</div>
+        <div class="home-card-label">Paradigm Review</div>
+        <div class="home-card-sub">Study charts and quiz Greek forms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCABULARY REVIEW HOME -->
+  <div id="screen-vocab-home" class="screen">
+    <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span>Vocabulary Review</span></div><div style="width:70px;"></div></div>
+    <div class="content-area"><h2 class="screen-title">Vocabulary Review</h2><p class="paradigm-intro">Choose how you want to review the existing vocabulary database.</p><div class="home-cards"><div class="home-card" onclick="goTo('chapter')"><div class="home-card-icon">Γ</div><div class="home-card-label">Single Section</div><div class="home-card-sub">Review one chapter or list</div></div><div class="home-card" onclick="goTo('multi')"><div class="home-card-icon">Σ</div><div class="home-card-label">Multi-Section Mix</div><div class="home-card-sub">Combine chapters and lists</div></div><div class="home-card" onclick="openStarredChoice()"><div class="home-card-icon">★</div><div class="home-card-label">Starred Vocab</div><div class="home-card-sub">Review saved words</div></div></div></div>
+  </div>
+
+  <!-- SINGLE SECTION SELECTION SCREEN -->
+  <div id="screen-chapter" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+      <div class="topbar-brand">
+        <svg viewBox="0 0 100 100" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#ffffff" stroke-width="6"/>
+          <path d="M50 20 L70 72 H60 L56 58 H44 L40 72 H30 L50 20 Z M46 51 H54 L50 35 Z" fill="#ffffff"/>
+        </svg>
+        <span>Select Vocabulary Section</span>
+      </div>
+      <div style="width: 60px;"></div>
+    </div>
+    <div class="content-area">
+      <h2 class="screen-title">Choose a Section</h2>
+      
+      <div class="tab-container">
+        <button class="tab-btn active" id="tab-ch" onclick="switchSingleTab('ch')">Chapters (1–11)</button>
+        <button class="tab-btn" id="tab-list" onclick="switchSingleTab('list')">Lists (1–13)</button>
+      </div>
+
+      <div class="section-grid" id="single-grid-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MULTI-SECTION SCREEN -->
+  <div id="screen-multi" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+      <div class="topbar-brand">
+        <svg viewBox="0 0 100 100" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#ffffff" stroke-width="6"/>
+          <path d="M50 20 L70 72 H60 L56 58 H44 L40 72 H30 L50 20 Z M46 51 H54 L50 35 Z" fill="#ffffff"/>
+        </svg>
+        <span>Multi-Section Mix</span>
+      </div>
+      <div style="width: 60px;"></div>
+    </div>
+    <div class="content-area">
+      <h2 class="screen-title">Select Sections to Combine</h2>
+      
+      <div class="multi-controls">
+        <button class="sec-action-btn" onclick="selectAll('ch')">Select All Chapters</button>
+        <button class="sec-action-btn" onclick="selectAll('list')">Select All Lists</button>
+        <button class="sec-action-btn" onclick="clearAllSelections()">Clear All</button>
+      </div>
+
+      <div class="multi-ch-list">
+        <div class="group-title">Chapters (1–11)</div>
+        <div class="ch-checkbox-grid" id="multi-ch-grid"></div>
+
+        <div class="group-title">Vocabulary Lists (1–13)</div>
+        <div class="ch-checkbox-grid" id="multi-list-grid"></div>
+      </div>
+
+      <div class="action-group">
+        <button class="primary-btn" onclick="startMultiReview('flashcards')">🎴 Flashcard Mode</button>
+        <button class="secondary-btn" onclick="startMultiReview('test')">📝 List Test Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLASHCARD SCREEN -->
+  <div id="screen-flashcard" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+      <span class="progress-text" id="fc-progress">1 / 20</span>
+
+      <!-- SHUFFLE SWITCH -->
+      <div class="shuffle-switch-container">
+        <span>Shuffle</span>
+        <label class="switch">
+          <input type="checkbox" id="fc-shuffle-toggle" onchange="toggleShuffle(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="content-area" style="justify-content: center; margin-top: 50px;">
+      
+      <div class="flashcard-container">
+        <button class="star-btn" id="fc-star" onclick="toggleStar(event)" title="Star this word">★</button>
+        <div class="flashcard" id="fc-element" onclick="flipCard()">
+          <div class="card-face card-front">
+            <div class="fc-greek" id="fc-greek-text">λόγος</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="fc-english" id="fc-english-text">word, matter</div>
+            <div class="fc-meta" id="fc-meta-text">Chapter 2</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-controls">
+        <button class="ctrl-btn" onclick="prevCard()">← Prev</button>
+        <button class="ctrl-btn flip" onclick="flipCard()">Flip</button>
+        <button class="ctrl-btn" onclick="nextCard()">Next →</button>
+      </div>
+
+      <div class="key-hint">Shortcuts: <b>Space</b> to flip | <b>← / →</b> for prev/next | <b>S</b> to star</div>
+
+    </div>
+  </div>
+
+  <!-- LIST TEST MODE SCREEN -->
+  <div id="screen-test" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+      <span id="test-title-text" style="font-weight: bold; font-family: 'Noto Serif', serif;">Vocabulary Test</span>
+      
+      <!-- SHUFFLE SWITCH FOR TEST -->
+      <div class="shuffle-switch-container">
+        <span>Shuffle</span>
+        <label class="switch">
+          <input type="checkbox" id="test-shuffle-toggle" onchange="toggleTestShuffle(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="content-area" style="margin-top: 65px;">
+      
+      <div class="test-score-banner" id="test-score-banner"></div>
+
+      <div class="test-list-container" id="test-list-container">
+        <!-- Rendered via JS -->
+      </div>
+
+      <div class="action-group" style="margin-bottom: 40px;">
+        <button class="primary-btn" onclick="checkTestAnswers()">Check Answers</button>
+        <button class="secondary-btn" onclick="resetTest()">Reset Test</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PARADIGM REVIEW HOME -->
+  <div id="screen-paradigm-home" class="screen">
+    <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span>Paradigm Review</span></div><div style="width:70px;"></div></div>
+    <div class="content-area">
+      <h2 class="screen-title">Greek Paradigms</h2>
+      <p class="paradigm-intro">Choose a small section to study or test. Forms follow the supplied <em>λύω</em> chart.</p>
+      <div class="family-tabs"><button id="family-verb" onclick="setParadigmFamily('verb')">Verb Forms</button><button id="family-nonverb" onclick="setParadigmFamily('nonverb')">Non-Verb Forms</button></div>
+      <div class="paradigm-grid" id="paradigm-section-grid"></div>
+      <h3 class="screen-title" style="font-size:22px; margin-top:40px;">Quiz Yourself</h3>
+      <div class="paradigm-controls">
+        <label>Select Section<select id="paradigm-section-select" onchange="selectParadigmSection(this.value)"></select></label>
+        <label>Questions<select id="paradigm-count"><option value="10">10 questions</option><option value="20">20 questions</option><option value="all">All available forms</option></select></label>
+        <div class="tense-picker" id="tense-picker" hidden></div>
+      </div>
+      <div class="action-group" style="flex-wrap:wrap;"><button class="secondary-btn" onclick="openFillChart()">Fill in Chart</button><button class="primary-btn" onclick="startParadigmQuiz('focused')">Focused Quiz</button><button class="secondary-btn" onclick="startParadigmQuiz('category')">Mixed Category</button><button class="primary-btn" onclick="startParadigmQuiz('all')">Full Mixed Quiz</button></div>
+    </div>
+  </div>
+
+  <!-- PARADIGM STUDY CHART -->
+  <div id="screen-paradigm-study" class="screen">
+    <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span id="study-title">Study Chart</span></div><details class="function-menu"><summary>Function</summary><div class="function-menu-panel"><label class="function-switch">Show hyphens<input type="checkbox" id="study-hyphen-toggle" onchange="toggleStudyHyphens(this.checked)"></label><label class="function-switch">Hide on click<input type="checkbox" id="study-click-toggle" checked onchange="toggleStudyClick(this.checked)"></label></div></details></div>
+    <div class="content-area"><p class="paradigm-intro">Click vocabulary to hide vocabulary, click row/colum to hide row/colum.</p><div class="tense-picker" id="indicative-study-tense-picker" hidden></div><div class="chart-wrap" id="study-chart"></div><div class="action-group"><button class="secondary-btn" onclick="startParadigmQuiz('focused')">Quiz this section</button></div></div>
+  </div>
+
+  <!-- PARADIGM QUIZ -->
+  <div id="screen-paradigm-quiz" class="screen">
+    <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span id="paradigm-quiz-title">Paradigm Quiz</span></div><button class="back-btn" onclick="restartParadigmQuiz()">Restart</button></div>
+    <div class="content-area" style="justify-content:center;"><div class="quiz-progress"><div id="paradigm-progress-bar"></div></div><div class="progress-text" id="paradigm-score">Score: 0 / 0</div><div class="quiz-card" id="paradigm-quiz-card"></div><div class="missed-list" id="paradigm-missed"></div></div>
+  </div>
+
+  <!-- PARADIGM CHART FILL MODE -->
+  <div id="screen-paradigm-fill" class="screen">
+    <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span id="fill-title">Fill in Chart</span></div><button class="back-btn" onclick="openFillChart()">Reset</button></div>
+    <div class="content-area"><p class="paradigm-intro">Fill each selected cell with the correct Greek form, then check the chart.</p><div class="chart-wrap" id="fill-chart"></div><div class="quiz-feedback" id="fill-feedback"></div><div class="action-group"><button class="primary-btn" onclick="checkFillChart()">Check chart</button></div></div>
+  </div>
+
+  <!-- MODE SELECTION MODAL -->
+  <div class="modal-overlay" id="mode-modal">
+    <div class="modal-card">
+      <div class="modal-title" id="modal-section-title">Chapter Review</div>
+      <div class="modal-sub">Choose your preferred learning mode:</div>
+      <div class="modal-buttons">
+        <button class="primary-btn" onclick="confirmModeSelection('flashcards')">🎴 Flashcard Mode</button>
+        <button class="secondary-btn" onclick="confirmModeSelection('test')">📝 List Test Mode</button>
+        <button class="sec-action-btn" onclick="closeModeModal()" style="margin-top: 8px;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Complete Vocabulary Database from Biblical Greek Made Easy (464 words)
+  const vocabData = [
+    // Page 1
+    { id: 1, greek: "Ἀβραάμ, ὁ", english: "Abraham (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 2, greek: "ἀγαθός, -ή, -όν", english: "good, useful (adj.)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 3, greek: "ἀγαπάω", english: "I love, cherish (verb)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 4, greek: "ἀγάπη, -ης, ἡ", english: "love (noun)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 5, greek: "ἀγαπητός, -ή, -όν", english: "beloved (adj.)", section: "List 5", type: "list", unit: 5 },
+    { id: 6, greek: "ἄγγελος, -ου, ὁ", english: "messenger, angel (noun)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 7, greek: "ἅγιος, -α, -ον", english: "holy; pl. saints (adj.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 8, greek: "ἀγοράζω", english: "I buy (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 9, greek: "ἀγρός, -οῦ, ὁ", english: "field (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 10, greek: "ἄγω", english: "I bring, lead, arrest (verb)", section: "List 4", type: "list", unit: 4 },
+    { id: 11, greek: "ἀδελφός, -οῦ, ὁ", english: "brother (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 12, greek: "αἷμα, -ματος, τό", english: "blood (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 13, greek: "αἴρω", english: "I raise, take up, take away (verb)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 14, greek: "αἰτέω", english: "I ask, demand (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 15, greek: "αἰών, -ῶνος, ὁ", english: "age, eternity (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 16, greek: "αἰώνιος, -ος, -ον", english: "eternal (adj.)", section: "List 3", type: "list", unit: 3 },
+    { id: 17, greek: "ἀκάθαρτος, -ος, -ον", english: "unclean (adj.)", section: "List 12", type: "list", unit: 12 },
+    { id: 18, greek: "ἀκολουθέω", english: "I follow, accompany (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 19, greek: "ἀκούω", english: "I hear (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 20, greek: "ἀλήθεια, -ας, ἡ", english: "truth, reality, faithfulness (noun)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 21, greek: "ἀλλά (ἀλλ᾽)", english: "but, yet, except (conj.)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 22, greek: "ἀλλήλων (-οις, -ους)", english: "one another (pron.)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 23, greek: "ἄλλος, -η, -ον", english: "other, another (adj.)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 24, greek: "ἁμαρτάνω", english: "I sin (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 25, greek: "ἁμαρτία, -ας, ἡ", english: "sin (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 26, greek: "ἁμαρτωλός, -ός, -όν", english: "sinner, sinful (adj.)", section: "List 7", type: "list", unit: 7 },
+    { id: 27, greek: "ἀμήν", english: "amen, truly (particle)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 28, greek: "ἄν", english: "(conditional particle) -ever; if, would, might", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 29, greek: "ἀναβαίνω", english: "I go up, come up, rise up (verb)", section: "List 2", type: "list", unit: 2 },
+
+    // Page 2
+    { id: 30, greek: "ἀναγινώσκω", english: "I read (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 31, greek: "ἀνάστασις, -εως, ἡ", english: "resurrection, standing up (noun)", section: "List 9", type: "list", unit: 9 },
+    { id: 32, greek: "ἄνεμος, -ου, ὁ", english: "wind (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 33, greek: "ἀνήρ, ἀνδρός, ὁ", english: "man, husband (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 34, greek: "ἄνθρωπος, -ου, ὁ", english: "man, person (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 35, greek: "ἀνίστημι", english: "I rise, get up; I raise (verb)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 36, greek: "ἀνοίγω", english: "I open, unlock, disclose (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 37, greek: "ἄξιος, -α, -ον", english: "worthy (adj.)", section: "List 9", type: "list", unit: 9 },
+    { id: 38, greek: "ἀπαγγέλλω", english: "I report, tell, bring news (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 39, greek: "ἅπας, ἅπασα, ἅπαν", english: "all, every (adj.)", section: "List 11", type: "list", unit: 11 },
+    { id: 40, greek: "ἀπέρχομαι", english: "I depart, go away (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 41, greek: "ἀπό (ἀπ᾽, ἀφ᾽)", english: "(+gen.) (away) from (prep.)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 42, greek: "ἀποδίδωμι", english: "I give back, pay (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 43, greek: "ἀποθνήσκω", english: "I die, am about to die (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 44, greek: "ἀποκρίνομαι", english: "I answer (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 45, greek: "ἀποκτείνω (ἀποκτέννω)", english: "I kill (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 46, greek: "ἀπόλλυμι", english: "I destroy, kill; I perish, die (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 47, greek: "ἀπολύω", english: "I release, divorce (verb)", section: "List 4", type: "list", unit: 4 },
+    { id: 48, greek: "ἀποστέλλω", english: "I send (away) (verb)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 49, greek: "ἀπόστολος, -ου, ὁ", english: "apostle (noun)", section: "List 2", type: "list", unit: 2 },
+    { id: 50, greek: "ἅπτω (ἅπτομαι)", english: "I touch, hold, grasp; light (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 51, greek: "ἄρα", english: "then, therefore (particle)", section: "List 6", type: "list", unit: 6 },
+    { id: 52, greek: "ἀρνέομαι", english: "I deny (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 53, greek: "ἀρνίον, -ου, τό", english: "lamb, small lamb (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 54, greek: "ἄρτι", english: "now (adv.)", section: "List 11", type: "list", unit: 11 },
+    { id: 55, greek: "ἄρτος, -ου, ὁ", english: "bread, loaf, food (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 56, greek: "ἀρχή, -ῆς, ἡ", english: "beginning, first; ruler (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 57, greek: "ἀρχιερεύς, -έως, ὁ", english: "chief priest, high priest (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 58, greek: "ἄρχομαι (ἄρχω)", english: "I begin; I rule over (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 59, greek: "ἄρχων, -χοντος, ὁ", english: "ruler (noun)", section: "List 10", type: "list", unit: 10 },
+    { id: 60, greek: "ἀσθενέω", english: "I am weak (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 61, greek: "ἀσπάζομαι", english: "I greet, salute, welcome (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 62, greek: "αὐτός, αὐτή, αὐτό", english: "he, she, it (-self, same) (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 63, greek: "ἀφίημι", english: "I let go, leave, forgive (verb)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 64, greek: "ἄχρι (ἄχρις)", english: "(+gen.) until (prep.)", section: "List 7", type: "list", unit: 7 },
+
+    // Page 3
+    { id: 65, greek: "βάλλω", english: "I throw (verb)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 66, greek: "βαπτίζω", english: "I baptize, wash, immerse (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 67, greek: "βασιλεία, -ας, ἡ", english: "kingdom (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 68, greek: "βασιλεύς, -έως, ὁ", english: "king (noun)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 69, greek: "βιβλίον, -ου, τό", english: "scroll, papyrus strip (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 70, greek: "βλασφημέω", english: "I slander, blaspheme (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 71, greek: "βλέπω", english: "I see (verb)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 72, greek: "βούλομαι", english: "I will, want (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 73, greek: "Γαλιλαία, -ας, ἡ", english: "Galilee (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 74, greek: "γάρ", english: "for, so, then (conj.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 75, greek: "γενεά, -ᾶς, ἡ", english: "generation (noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 76, greek: "γεννάω", english: "I bear, beget, produce (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 77, greek: "γῆ, -ῆς, ἡ", english: "land, earth (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 78, greek: "γίνομαι", english: "I become, am, exist, happen (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 79, greek: "γινώσκω", english: "I know, come to know, learn (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 80, greek: "γλῶσσα, -ης, ἡ", english: "tongue, language (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 81, greek: "γραμματεύς, -έως, ὁ", english: "scribe, secretary (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 82, greek: "γραφή, -ῆς, ἡ", english: "written document, scripture (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 83, greek: "γράφω", english: "I write (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 84, greek: "γυνή, -αικός, ἡ", english: "woman, wife (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 85, greek: "δαιμόνιον, -ου, τό", english: "demon (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 86, greek: "Δαυίδ, ὁ", english: "David (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 87, greek: "δέ", english: "but, and (conj.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 88, greek: "δεῖ", english: "it is necessary (verb)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 89, greek: "δείκνυμι (δεικνύω)", english: "I show, explain (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 90, greek: "δεξιός, -ά, -όν", english: "right, right hand, right side (adj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 91, greek: "δεύτερος, -α, -ον", english: "second (adj.)", section: "List 8", type: "list", unit: 8 },
+    { id: 92, greek: "δέχομαι", english: "I take, receive (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 93, greek: "δέω", english: "I bind, stop (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 94, greek: "διά (δι᾽)", english: "(+gen.) through; (+acc.) because of (prep.)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 95, greek: "διάβολος, -ος, -ον", english: "enemy, adversary; devil (adj.)", section: "List 10", type: "list", unit: 10 },
+    { id: 96, greek: "διαθήκη, -ης, ἡ", english: "covenant (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 97, greek: "διακονέω", english: "I serve, wait on (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 98, greek: "διακονία, -ας, ἡ", english: "service, ministry (noun)", section: "List 11", type: "list", unit: 11 },
+
+    // Page 4
+    { id: 99, greek: "διδάσκαλος, -ου, ὁ", english: "teacher (noun)", section: "List 5", type: "list", unit: 5 },
+    { id: 100, greek: "διδάσκω", english: "I teach (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 101, greek: "διδαχή, -ῆς, ἡ", english: "teaching (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 102, greek: "δίδωμι", english: "I give, entrust, grant (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 103, greek: "διέρχομαι", english: "I go/pass through (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 104, greek: "δίκαιος, -α, -ον", english: "right, righteous, just (adj.)", section: "List 2", type: "list", unit: 2 },
+    { id: 105, greek: "δικαιοσύνη, -ης, ἡ", english: "righteousness, justice (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 106, greek: "δικαιόω", english: "I justify, vindicate (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 107, greek: "διό", english: "therefore, for this reason (conj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 108, greek: "διώκω", english: "I pursue, persecute (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 109, greek: "δοκέω", english: "I think, suppose, seem (verb)", section: "List 4", type: "list", unit: 4 },
+    { id: 110, greek: "δόξα, -ης, ἡ", english: "glory (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 111, greek: "δοξάζω", english: "I praise, honor, glorify (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 112, greek: "δοῦλος, -ου, ὁ", english: "slave, servant (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 113, greek: "δύναμαι", english: "I am able, I can (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 114, greek: "δύναμις, -εως, ἡ", english: "power, ability (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 115, greek: "δυνατός, -ή, -όν", english: "possible, strong, able (adj.)", section: "List 12", type: "list", unit: 12 },
+    { id: 116, greek: "δύο", english: "two (adj.)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 117, greek: "δώδεκα (indecl.)", english: "twelve (adj.)", section: "List 3", type: "list", unit: 3 },
+    { id: 118, greek: "ἐάν", english: "if (ever), when (ever) (conj.)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 119, greek: "ἑαυτοῦ, -ῆς, -οῦ", english: "himself/herself/itself (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 120, greek: "ἐγγίζω", english: "I bring near, come near (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 121, greek: "ἐγγύς", english: "(+gen.) near (prep.)", section: "List 12", type: "list", unit: 12 },
+    { id: 122, greek: "ἐγείρω", english: "I raise up, wake (verb)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 123, greek: "ἐγώ (pl. ἡμεῖς)", english: "I; we (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 124, greek: "ἔθνος, -ους, τό", english: "(sg.) nation; (pl.) Gentiles (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 125, greek: "εἰ", english: "if (particle)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 126, greek: "εἰμί", english: "I am (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 127, greek: "εἰρήνη, -ης, ἡ", english: "peace, health (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 128, greek: "εἰς", english: "(+acc.) into, in, to, toward (prep.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 129, greek: "εἷς, μία, ἕν", english: "one (adj.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 130, greek: "εἰσέρχομαι", english: "I enter, come in(to) (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 131, greek: "εἴτε", english: "(even) if; whether/or, either/or (conj.)", section: "List 4", type: "list", unit: 4 },
+    { id: 132, greek: "ἐκ (ἐξ)", english: "(+gen.) from, out of, by (prep.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 133, greek: "ἕκαστος, -η, -ον", english: "each, every (adj.)", section: "List 2", type: "list", unit: 2 },
+
+    // Page 5
+    { id: 134, greek: "ἐκβάλλω", english: "I cast out, send out, drive out (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 135, greek: "ἐκεῖ", english: "there, in that place (adv.)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 136, greek: "ἐκεῖθεν", english: "from there (adv.)", section: "List 10", type: "list", unit: 10 },
+    { id: 137, greek: "ἐκεῖνος, -η, -ο", english: "that, [pl.] those (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 138, greek: "ἐκκλησία, -ας, ἡ", english: "assembly, church, congregation (noun)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 139, greek: "ἐκπορεύομαι", english: "I go, come out (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 140, greek: "ἐλπίζω", english: "I hope (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 141, greek: "ἐλπίς, -ίδος, ἡ", english: "hope (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 142, greek: "ἐμαυτοῦ, -ῆς", english: "of myself, my own (pron.)", section: "List 10", type: "list", unit: 10 },
+    { id: 143, greek: "ἐμός, -ή, -όν", english: "my, mine (adj.)", section: "List 3", type: "list", unit: 3 },
+    { id: 144, greek: "ἔμπροσθεν", english: "(+gen.) before, in front of (prep.)", section: "List 7", type: "list", unit: 7 },
+    { id: 145, greek: "ἐν", english: "(+dat.) in, on, by (prep.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 146, greek: "ἐντολή, -ῆς, ἡ", english: "commandment, law (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 147, greek: "ἐνώπιον", english: "(+gen.) before, in front of (prep.)", section: "List 1", type: "list", unit: 1 },
+    { id: 148, greek: "ἐξέρχομαι", english: "I go out (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 149, greek: "ἔξεστι(ν)", english: "it is right, possible (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 150, greek: "ἐξουσία, -ας, ἡ", english: "authority, power (noun)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 151, greek: "ἔξω", english: "(+gen.) out, outside; without (prep.)", section: "List 4", type: "list", unit: 4 },
+    { id: 152, greek: "ἐπαγγελία, -ας, ἡ", english: "promise (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 153, greek: "ἐπερωτάω", english: "I ask (for), question (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 154, greek: "ἐπί (ἐπ᾽, ἐφ᾽)", english: "(+gen.) on, over; (+dat.) at; (+acc.) on, to (prep.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 155, greek: "ἐπιγινώσκω", english: "I know (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 156, greek: "ἐπιθυμία, -ας, ἡ", english: "desire, lust (noun)", section: "List 10", type: "list", unit: 10 },
+    { id: 157, greek: "ἐπικαλέω (ἐπικαλέομαι)", english: "I call on (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 158, greek: "ἐπιστρέφω", english: "I turn back, return (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 159, greek: "ἐπιτίθημι", english: "I lay on, place, put, add (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 160, greek: "ἑπτά (indecl.)", english: "seven (adj.)", section: "List 2", type: "list", unit: 2 },
+    { id: 161, greek: "ἐργάζομαι", english: "I work (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 162, greek: "ἔργον, -ου, τό", english: "work, deed, action (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 163, greek: "ἔρημος, -ος, -ον", english: "desolate, wilderness, desert (adj.)", section: "List 7", type: "list", unit: 7 },
+    { id: 164, greek: "ἔρχομαι", english: "I come, go (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 165, greek: "ἐρωτάω", english: "I ask, request, entreat (verb)", section: "List 4", type: "list", unit: 4 },
+    { id: 166, greek: "ἐσθίω", english: "I eat (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 167, greek: "ἔσομαι", english: "I shall be (fut. of εἰμί) (verb)", section: "List 3", type: "list", unit: 3 },
+
+    // Page 6
+    { id: 168, greek: "ἔσχατος, -η, -ον", english: "last, least, end (adj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 169, greek: "ἕτερος, -α, -ον", english: "other, another, different (adj.)", section: "List 1", type: "list", unit: 1 },
+    { id: 170, greek: "ἔτι", english: "yet, still (adv.)", section: "List 1", type: "list", unit: 1 },
+    { id: 171, greek: "ἑτοιμάζω", english: "I prepare (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 172, greek: "ἔτος, -ους, τό", english: "year (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 173, greek: "εὐαγγελίζω (εὐαγγελίζομαι)", english: "I bring good news, preach (verb)", section: "List 6", type: "list", unit: 6 },
+    { id: 174, greek: "εὐαγγέλιον, -ου, τό", english: "good news, gospel (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 175, greek: "εὐθέως", english: "immediately, at once (adv.)", section: "List 11", type: "list", unit: 11 },
+    { id: 176, greek: "εὐθύς (εὐθέως)", english: "immediately (adv); straight (adj)", section: "List 5", type: "list", unit: 5 },
+    { id: 177, greek: "εὐλογέω", english: "I bless (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 178, greek: "εὑρίσκω", english: "I find (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 179, greek: "εὐχαριστέω", english: "I give thanks (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 180, greek: "ἐχθρός, -ά, -όν", english: "hostile, enemy (adj.)", section: "List 12", type: "list", unit: 12 },
+    { id: 181, greek: "ἔχω", english: "I have (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 182, greek: "ἕως", english: "(conj.) until; (prep.) [+gen] as far as", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 183, greek: "ζάω", english: "I live (verb)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 184, greek: "ζητέω", english: "I seek, desire (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 185, greek: "ζωή, -ῆς, ἡ", english: "life (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 186, greek: "ἤ", english: "or, than (particle)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 187, greek: "ἤδη", english: "now, already (adv.)", section: "List 5", type: "list", unit: 5 },
+    { id: 188, greek: "ἥλιος, -ου, ὁ", english: "sun (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 189, greek: "ἡμέρα, -ας, ἡ", english: "day (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 190, greek: "Ἡρώδης, -ου, ὁ", english: "Herod (pr. noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 191, greek: "θάλασσα, -ης, ἡ", english: "sea, lake (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 192, greek: "θάνατος, -ου, ὁ", english: "death (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 193, greek: "θαυμάζω", english: "I marvel, wonder (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 194, greek: "θέλημα, -ματος, τό", english: "will, desire, wish (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 195, greek: "θέλω", english: "I want, wish, desire (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 196, greek: "θεός, -οῦ, ὁ", english: "God, god (noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 197, greek: "θεραπεύω", english: "I serve, heal (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 198, greek: "θεωρέω", english: "I look at, behold, see (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 199, greek: "θηρίον, -ου, τό", english: "wild animal (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 200, greek: "θλῖψις, -ψεως, ἡ", english: "affliction, trouble, tribulation (noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 201, greek: "θρόνος, -ου, ὁ", english: "throne, seat (noun)", section: "List 4", type: "list", unit: 4 },
+
+    // Page 7
+    { id: 202, greek: "θύρα, -ας, ἡ", english: "door (noun)", section: "List 10", type: "list", unit: 10 },
+    { id: 203, greek: "Ἰάκωβος, -ου, ὁ", english: "Jacob; James (pr. noun)", section: "List 9", type: "list", unit: 9 },
+    { id: 204, greek: "ἴδιος, -α, -ον", english: "one's own; his/her/its (adj.)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 205, greek: "ἰδού", english: "look!, Behold! (interj.)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 206, greek: "ἱερεύς, -έως, ὁ", english: "priest (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 207, greek: "ἱερόν, -οῦ, τό", english: "temple (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 208, greek: "Ἱεροσόλυμα, τά / ἡ", english: "Jerusalem (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 209, greek: "Ἰερουσαλήμ, ἡ", english: "Jerusalem (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 210, greek: "Ἰησοῦς, -οῦ, ὁ", english: "Jesus, Joshua (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 211, greek: "ἱκανός, -ή, -όν", english: "sufficient, able, worthy (adj.)", section: "List 10", type: "list", unit: 10 },
+    { id: 212, greek: "ἱμάτιον, -ου, τό", english: "garment, cloak, clothing (noun)", section: "List 5", type: "list", unit: 5 },
+    { id: 213, greek: "ἵνα", english: "in order that, that (conj.)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 214, greek: "Ἰουδαία, -ας, ἡ", english: "Judea (pr. noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 215, greek: "Ἰουδαῖος, -α, -ον", english: "Jewish; Jew, Judean (adj./noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 216, greek: "Ἰούδας, -α, ὁ", english: "Judas/Judah (pr. noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 217, greek: "ἴσθι", english: "you be! (Imperative of εἰμί) (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 218, greek: "Ἰσραήλ, ὁ", english: "Israel (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 219, greek: "ἵστημι", english: "I stand, set, place (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 220, greek: "Ἰωάννης, -ου, ὁ", english: "John (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 221, greek: "Ἰωσήφ, ὁ", english: "Joseph (pr. noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 222, greek: "καθαρίζω", english: "I cleanse (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 223, greek: "κάθημαι", english: "I sit (down), live (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 224, greek: "καθίζω", english: "I sit, set, place (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 225, greek: "καθώς", english: "as, even as, just as (conj.)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 226, greek: "καί", english: "and, even, also (conj.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 227, greek: "καινός, -ή, -όν", english: "new (adj.)", section: "List 9", type: "list", unit: 9 },
+    { id: 228, greek: "καιρός, -οῦ, ὁ", english: "(appointed) time, season (noun)", section: "List 2", type: "list", unit: 2 },
+    { id: 229, greek: "κακός, -ή, -όν", english: "evil, bad, wrong, harm (adj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 230, greek: "καλέω", english: "I call, name, invite (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 231, greek: "καλός, -ή, -όν", english: "good, beautiful (adj.)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 232, greek: "καλῶς", english: "well, rightly (adv.)", section: "List 10", type: "list", unit: 10 },
+    { id: 233, greek: "καρδία, -ας, ἡ", english: "heart (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 234, greek: "καρπός, -οῦ, ὁ", english: "fruit, crop, result (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 235, greek: "κατά (κατ᾽, καθ᾽)", english: "(+gen.) down from; (+acc.) according to (prep.)", section: "Chapter 3", type: "ch", unit: 3 },
+
+    // Page 8
+    { id: 236, greek: "καταβαίνω", english: "I come down, go down (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 237, greek: "κατοικέω", english: "I settle, dwell, inhabit (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 238, greek: "καυχάομαι", english: "I boast, glory (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 239, greek: "κεφαλή, -ῆς, ἡ", english: "head (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 240, greek: "κηρύσσω", english: "I proclaim, preach (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 241, greek: "κλαίω", english: "I weep, cry (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 242, greek: "κόσμος, -ου, ὁ", english: "world, universe (noun)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 243, greek: "κράζω", english: "I call out, cry out (verb)", section: "List 6", type: "list", unit: 6 },
+    { id: 244, greek: "κρατέω", english: "I grasp, take possession (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 245, greek: "κρίνω", english: "I judge, decide, prefer (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 246, greek: "κρίσις, -εως, ἡ", english: "judgment, decision (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 247, greek: "κύριος, -οῦ, ὁ", english: "lord, Lord (noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 248, greek: "λαλέω", english: "to sound, talk, speak (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 249, greek: "λαμβάνω", english: "I take, receive (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 250, greek: "λαός, -οῦ, ὁ", english: "people, crowd (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 251, greek: "λέγω", english: "I say, speak (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 252, greek: "λίθος, -ου, ὁ", english: "stone (noun)", section: "List 5", type: "list", unit: 5 },
+    { id: 253, greek: "λογίζομαι", english: "I count, think, calculate (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 254, greek: "λόγος, -ου, ὁ", english: "word, matter (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 255, greek: "λοιπός, -ή, -όν", english: "(noun) rest; (adj.) remaining; (adv.) finally", section: "List 6", type: "list", unit: 6 },
+    { id: 256, greek: "λύω", english: "I loosen, release (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 257, greek: "μαθητής, -οῦ, ὁ", english: "disciple, student (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 258, greek: "μακάριος, -α, -ον", english: "blessed, happy (adj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 259, greek: "μᾶλλον", english: "more, rather (adv.)", section: "List 2", type: "list", unit: 2 },
+    { id: 260, greek: "μαρτυρέω", english: "I bear witness, testify (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 261, greek: "μαρτυρία, -ας, ἡ", english: "testimony (noun)", section: "List 10", type: "list", unit: 10 },
+    { id: 262, greek: "μάρτυς, -υρος, ὁ", english: "witness (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 263, greek: "μέγας, -η, -α", english: "large, great (adj.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 264, greek: "μείζων (μεῖζον)", english: "greater, larger (adj.)", section: "List 7", type: "list", unit: 7 },
+    { id: 265, greek: "μέλλω", english: "I am about to, intend (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 266, greek: "μέλος, -ους, τό", english: "body part; melody (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 267, greek: "μέν", english: "on the one hand, indeed (particle)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 268, greek: "μένω", english: "I remain, live, abide (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 269, greek: "μέρος, -ους, τό", english: "part (noun)", section: "List 9", type: "list", unit: 9 },
+    { id: 270, greek: "μέσος, -η, -ον", english: "middle; in the middle (adj.)", section: "List 5", type: "list", unit: 5 },
+
+    // Page 9
+    { id: 271, greek: "μετά (μετ᾽, μεθ᾽)", english: "(+gen.) with; (+acc.) after (prep.)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 272, greek: "μετανοέω", english: "I repent (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 273, greek: "μή", english: "not, no; lest (conj.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 274, greek: "μηδέ", english: "nor, and not, but not (conj.)", section: "List 5", type: "list", unit: 5 },
+    { id: 275, greek: "μηδείς, μηδεμία, μηδέν", english: "no one, nothing (adj.)", section: "List 1", type: "list", unit: 1 },
+    { id: 276, greek: "μήτε", english: "and not; neither... nor (conj.)", section: "List 11", type: "list", unit: 11 },
+    { id: 277, greek: "μήτηρ, μητρός, ἡ", english: "mother (noun)", section: "List 2", type: "list", unit: 2 },
+    { id: 278, greek: "μικρός, -ά, -όν", english: "small, little (adj.)", section: "List 7", type: "list", unit: 7 },
+    { id: 279, greek: "μισέω", english: "I hate (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 280, greek: "μνημεῖον, -ου, τό", english: "tomb, monument (noun)", section: "List 9", type: "list", unit: 9 },
+    { id: 281, greek: "μόνος, -η, -ον", english: "alone, only (adj.)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 282, greek: "Μωϋσῆς, -έως, ὁ", english: "Moses (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 283, greek: "ναί", english: "yes (particle)", section: "List 11", type: "list", unit: 11 },
+    { id: 284, greek: "ναός, -ου, ὁ", english: "temple; palace (noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 285, greek: "νεκρός, -ά, -όν", english: "dead (adj.)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 286, greek: "νόμος, -ου, ὁ", english: "law (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 287, greek: "νῦν", english: "now (adv.); present (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 288, greek: "νύξ, νυκτός, ἡ", english: "night (noun)", section: "List 5", type: "list", unit: 5 },
+    { id: 289, greek: "ὁ, ἡ, τό", english: "the (article)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 290, greek: "ὁδός, -οῦ, ἡ", english: "way, road, journey (noun)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 291, greek: "οἶδα", english: "I know, understand (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 292, greek: "οἰκία, -ας, ἡ", english: "house, home (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 293, greek: "οἰκοδομέω", english: "I build (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 294, greek: "οἶκος, -ου, ὁ", english: "house, home (noun)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 295, greek: "οἶνος, -ου, ὁ", english: "wine (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 296, greek: "ὀλίγος, -η, -ον", english: "little, few (adj.)", section: "List 9", type: "list", unit: 9 },
+    { id: 297, greek: "ὅλος, -η, -ον", english: "whole, complete (adj.)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 298, greek: "ὅμοιος, -α, -ον", english: "like, similar (adj.)", section: "List 8", type: "list", unit: 8 },
+    { id: 299, greek: "ὁμοίως", english: "likewise (adv.)", section: "List 12", type: "list", unit: 12 },
+    { id: 300, greek: "ὄνομα, -ματος, τό", english: "name, reputation (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 301, greek: "ὀπίσω", english: "(+gen.) after; back (prep./adv.)", section: "List 11", type: "list", unit: 11 },
+    { id: 302, greek: "ὅπου (ποῦ)", english: "where, whereas (conj.)", section: "List 2", type: "list", unit: 2 },
+    { id: 303, greek: "ὅπως", english: "how, (so) that, in order that (conj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 304, greek: "ὁράω", english: "I see, notice, experience (verb)", section: "Chapter 5", type: "ch", unit: 5 },
+    { id: 305, greek: "ὀργή, -ῆς, ἡ", english: "wrath, anger (noun)", section: "List 11", type: "list", unit: 11 },
+
+    // Page 10
+    { id: 306, greek: "ὄρος, -ους, τό", english: "mountain, high hill (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 307, greek: "ὅς, ἥ, ὅ", english: "who, which, what (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 308, greek: "ὅσος, -α, -ον", english: "as great as, as many as (pron.)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 309, greek: "ὅστις, ἥτις, ὅτι", english: "whoever/whichever/whatever (pron.)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 310, greek: "ὅταν", english: "whenever (conj.)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 311, greek: "ὅτε", english: "when (conj.)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 312, greek: "ὅτι", english: "because, that, since (conj.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 313, greek: "οὐ, οὐκ, οὐχ", english: "not (particle)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 314, greek: "οὐαί", english: "woe! how terrible? (interj.)", section: "List 7", type: "list", unit: 7 },
+    { id: 315, greek: "οὐδέ", english: "and not, not even, neither (conj.)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 316, greek: "οὐδείς, οὐδεμία, οὐδέν", english: "no one, nothing (adj.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 317, greek: "οὐκέτι", english: "no longer (adv.)", section: "List 7", type: "list", unit: 7 },
+    { id: 318, greek: "οὖν", english: "therefore, then, accordingly (conj.)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 319, greek: "οὐρανός, -οῦ, ὁ", english: "heaven, sky (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 320, greek: "οὖς, ὠτός, τό", english: "ear (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 321, greek: "οὔτε", english: "neither (conj.)", section: "List 2", type: "list", unit: 2 },
+    { id: 322, greek: "οὗτος, αὕτη, τοῦτο", english: "this (one); pl. these (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 323, greek: "οὕτως", english: "thus, so, in this manner (adv.)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 324, greek: "οὐχί", english: "not, no (particle)", section: "List 6", type: "list", unit: 6 },
+    { id: 325, greek: "ὀφείλω", english: "I am obligated, I owe (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 326, greek: "ὀφθαλμός, -οῦ, ὁ", english: "eye, sight (noun)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 327, greek: "ὄχλος, -ου, ὁ", english: "crowd, multitude (noun)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 328, greek: "παιδίον, -ου, τό", english: "child, infant (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 329, greek: "πάλιν", english: "again (adv.)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 330, greek: "πάντοτε", english: "always (adv.)", section: "List 9", type: "list", unit: 9 },
+    { id: 331, greek: "παρά (παρ᾽)", english: "(+gen.) from; (+dat.) beside; (+acc.) alongside (prep.)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 332, greek: "παραβολή, -ῆς, ἡ", english: "parable (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 333, greek: "παραγγέλλω", english: "I command (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 334, greek: "παραγίνομαι", english: "I come, I appear (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 335, greek: "παραδίδωμι", english: "I entrust, hand over, betray (verb)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 336, greek: "παρακαλέω", english: "I call, urge, exhort, comfort (verb)", section: "Chapter 10", type: "ch", unit: 10 },
+    { id: 337, greek: "παραλαμβάνω", english: "I take along, accept, receive (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 338, greek: "παρίστημι (παριστάνω)", english: "I present, offer; stand by (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 339, greek: "παρρησία, -ας, ἡ", english: "boldness (noun)", section: "List 12", type: "list", unit: 12 },
+
+    // Page 11
+    { id: 340, greek: "πᾶς, πᾶσα, πᾶν", english: "every, each; [pl.] all (adj.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 341, greek: "πάσχω", english: "I suffer (verb)", section: "List 9", type: "list", unit: 9 },
+    { id: 342, greek: "πατήρ, πατρός, ὁ", english: "father (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 343, greek: "Παῦλος, -ου, ὁ", english: "Paul (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 344, greek: "πείθω", english: "I persuade, believe, trust (verb)", section: "List 6", type: "list", unit: 6 },
+    { id: 345, greek: "πειράζω", english: "I tempt, test (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 346, greek: "πέμπω", english: "I send (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 347, greek: "πέντε (indecl.)", english: "five (adj.)", section: "List 10", type: "list", unit: 10 },
+    { id: 348, greek: "περί", english: "(+gen.) about; (+acc.) around (prep.)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 349, greek: "περιπατέω", english: "I walk (around), live (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 350, greek: "περισσεύω", english: "I abound (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 351, greek: "περιτομή, -ῆς, ἡ", english: "circumcision (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 352, greek: "Πέτρος, -ου, ὁ", english: "Peter (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 353, greek: "Πιλᾶτος, -ου, ὁ", english: "Pilate (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 354, greek: "πίνω", english: "I drink (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 355, greek: "πίπτω", english: "I fall (verb)", section: "List 1", type: "list", unit: 1 },
+    { id: 356, greek: "πιστεύω", english: "I believe (in), have faith (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 357, greek: "πίστις, -εως, ἡ", english: "faith, belief, trust (noun)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 358, greek: "πιστός, -ή, -όν", english: "faithful, believing; reliable (adj.)", section: "List 4", type: "list", unit: 4 },
+    { id: 359, greek: "πλανάω", english: "I deceive (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 360, greek: "πλείων, -ων, -ον", english: "larger, more, greater (adj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 361, greek: "πλῆθος, -ους, τό", english: "multitude (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 362, greek: "πλὴν", english: "(+gen.) only, except; but (prep./conj.)", section: "List 12", type: "list", unit: 12 },
+    { id: 363, greek: "πληρόω", english: "I fill, fulfill, complete (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 364, greek: "πλοῖον, -ου, τό", english: "boat, ship (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 365, greek: "πνεῦμα, -ματος, τό", english: "wind, spirit (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 366, greek: "ποιέω", english: "I do, make (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 367, greek: "ποῖος, -α, -ον", english: "what kind of, which (pron.)", section: "List 11", type: "list", unit: 11 },
+    { id: 368, greek: "πόλις, -εως, ἡ", english: "city (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 369, greek: "πολύς, πολλή, πολύ", english: "much, [pl.] many (adj.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 370, greek: "πονηρός, -ά, -όν", english: "evil, bad, wicked (adj.)", section: "List 3", type: "list", unit: 3 },
+    { id: 371, greek: "πορεύομαι", english: "I go, proceed, live (verb)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 372, greek: "ποτήριον, -ου, τό", english: "cup (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 373, greek: "ποῦ", english: "where? (particle)", section: "List 7", type: "list", unit: 7 },
+    { id: 374, greek: "πούς, ποδός, ὁ", english: "foot (noun)", section: "List 1", type: "list", unit: 1 },
+
+    // Page 12
+    { id: 375, greek: "πράσσω", english: "I do, I accomplish (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 376, greek: "πρεσβύτερος, -α, -ον", english: "older; elder (adj.)", section: "List 4", type: "list", unit: 4 },
+    { id: 377, greek: "πρό", english: "(+gen.) before, above (prep.)", section: "List 7", type: "list", unit: 7 },
+    { id: 378, greek: "πρόβατον, -ου, τό", english: "sheep (noun)", section: "List 10", type: "list", unit: 10 },
+    { id: 379, greek: "πρός", english: "(+gen.) for; (+dat.) at; (+acc.) to (prep.)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 380, greek: "προσέρχομαι", english: "I come to (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 381, greek: "προσευχή, -ῆς, ἡ", english: "prayer (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 382, greek: "προσεύχομαι", english: "I pray (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 383, greek: "προσκυνέω", english: "I worship; do obeisance (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 384, greek: "προσφέρω", english: "I bring, I offer (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 385, greek: "πρόσωπον, -ου, τό", english: "face, appearance (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 386, greek: "προφήτης, -ου, ὁ", english: "prophet (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 387, greek: "πρῶτος, -η, -ον", english: "first, earlier, foremost (adj.)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 388, greek: "πτωχός, -ή, -όν", english: "poor (adj.)", section: "List 11", type: "list", unit: 11 },
+    { id: 389, greek: "πῦρ, πυρός, τό", english: "fire (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 390, greek: "πῶς", english: "how? (particle)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 391, greek: "ῥῆμα, -ματος, τό", english: "word, thing (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 392, greek: "σάββατον, -ου, τό", english: "sabbath, week (noun)", section: "List 4", type: "list", unit: 4 },
+    { id: 393, greek: "σάρξ, σαρκός, ἡ", english: "flesh, body (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 394, greek: "Σατανᾶς, -ᾶ, ὁ", english: "Satan (noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 395, greek: "σεαυτοῦ, -ῆς", english: "of yourself (sing.) (pron.)", section: "List 8", type: "list", unit: 8 },
+    { id: 396, greek: "σημεῖον, -ου, τό", english: "sign, miracle (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 397, greek: "σήμερον", english: "today (adv.)", section: "List 9", type: "list", unit: 9 },
+    { id: 398, greek: "Σίμων, Σίμωνος, ὁ", english: "Simon (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 399, greek: "σκότος, -ους, τό", english: "darkness (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 400, greek: "σοφία, -ας, ἡ", english: "wisdom (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 401, greek: "σπείρω", english: "I sow (verb)", section: "List 6", type: "list", unit: 6 },
+    { id: 402, greek: "σπέρμα, -ματος, τό", english: "seed, offspring (noun)", section: "List 8", type: "list", unit: 8 },
+    { id: 403, greek: "σταυρόω", english: "I crucify (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 404, greek: "στόμα, -ματος, τό", english: "mouth (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 405, greek: "σύ (pl. ὑμεῖς)", english: "you (sg.); y'all (pl.) (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 406, greek: "σύν", english: "(+dat.) with (prep.)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 407, greek: "συνάγω", english: "I gather together, invite (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 408, greek: "συναγωγή, -ῆς, ἡ", english: "synagogue, gathering (noun)", section: "List 5", type: "list", unit: 5 },
+    { id: 409, greek: "συνείδησις, -εως, ἡ", english: "conscience (noun)", section: "List 12", type: "list", unit: 12 },
+
+    // Page 13
+    { id: 410, greek: "συνέρχομαι", english: "I come/go together (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 411, greek: "σῴζω (σώζω)", english: "I save, heal, deliver (verb)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 412, greek: "σῶμα, -ματος, τό", english: "body (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 413, greek: "σωτηρία, -ας, ἡ", english: "salvation, deliverance (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 414, greek: "τέ", english: "and (so), so [both...and] (conj.)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 415, greek: "τέκνον, -ου, τό", english: "child, descendent (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 416, greek: "τέλος, -ους, τό", english: "end, goal; tribute (noun)", section: "List 9", type: "list", unit: 9 },
+    { id: 417, greek: "τέσσαρες", english: "four (adj.)", section: "List 9", type: "list", unit: 9 },
+    { id: 418, greek: "τηρέω", english: "I keep, guard, observe (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 419, greek: "τίθημι", english: "I put, place (verb)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 420, greek: "τιμή, -ῆς, ἡ", english: "honor (noun)", section: "List 9", type: "list", unit: 9 },
+    { id: 421, greek: "τις, τι", english: "someone, anyone, certain one (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 422, greek: "τίς, τί", english: "who? which? what? why? (pron.)", section: "Chapter 6", type: "ch", unit: 6 },
+    { id: 423, greek: "τοιοῦτος, -αύτη, -οῦτο(ν)", english: "such, of such kind (pron.)", section: "List 5", type: "list", unit: 5 },
+    { id: 424, greek: "τόπος, -ου, ὁ", english: "place, position, opportunity (noun)", section: "List 1", type: "list", unit: 1 },
+    { id: 425, greek: "τότε", english: "then (adv.)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 426, greek: "τρεῖς, τρεῖς, τρία", english: "three (adj.)", section: "List 4", type: "list", unit: 4 },
+    { id: 427, greek: "τρίτος, -η, -ον", english: "third (adj.)", section: "List 5", type: "list", unit: 5 },
+    { id: 428, greek: "τυφλός, -ή, -όν", english: "blind (adj.)", section: "List 6", type: "list", unit: 6 },
+    { id: 429, greek: "ὕδωρ, ὕδατος, τό", english: "water (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 430, greek: "υἱός, -οῦ, ὁ", english: "son, descendant, child (noun)", section: "Chapter 2", type: "ch", unit: 2 },
+    { id: 431, greek: "ὑπάγω", english: "I depart, go away (verb)", section: "List 2", type: "list", unit: 2 },
+    { id: 432, greek: "ὑπάρχω", english: "I am, exist, possess (verb)", section: "List 5", type: "list", unit: 5 },
+    { id: 433, greek: "ὑπέρ", english: "(+gen.) in behalf of; (+acc.) above (prep.)", section: "Chapter 7", type: "ch", unit: 7 },
+    { id: 434, greek: "ὑπό (ὑπ᾽, ὑφ᾽)", english: "(+gen.) by; (+acc.) under (prep.)", section: "Chapter 3", type: "ch", unit: 3 },
+    { id: 435, greek: "ὑπομονή, -ῆς, ἡ", english: "endurance, staying (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 436, greek: "ὑποστρέφω", english: "I return (verb)", section: "List 11", type: "list", unit: 11 },
+    { id: 437, greek: "ὑποτάσσω", english: "I subject, submit (verb)", section: "List 10", type: "list", unit: 10 },
+    { id: 438, greek: "φαίνω", english: "I appear, shine (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 439, greek: "φανερόω", english: "I reveal, make known (verb)", section: "List 7", type: "list", unit: 7 },
+    { id: 440, greek: "Φαρισαῖος, -ου, ὁ", english: "Pharisee (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 441, greek: "φέρω", english: "I bear, carry, produce, bring (verb)", section: "List 4", type: "list", unit: 4 },
+    { id: 442, greek: "φημί", english: "I say, affirm (verb)", section: "List 4", type: "list", unit: 4 },
+    { id: 443, greek: "Φίλιππος, -ου, ὁ", english: "Philip (pr. noun)", section: "List 11", type: "list", unit: 11 },
+    { id: 444, greek: "φοβέω (φοβεόμαι)", english: "I fear (verb)", section: "List 1", type: "list", unit: 1 },
+
+    // Page 14
+    { id: 445, greek: "φόβος, -ου, ὁ", english: "fear, terror, reverence (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 446, greek: "φυλακή, -ῆς, ἡ", english: "guard, watch, prison (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 447, greek: "φυλάσσω", english: "I guard, keep (verb)", section: "List 12", type: "list", unit: 12 },
+    { id: 448, greek: "φυλή, -ῆς, ἡ", english: "tribe (noun)", section: "List 12", type: "list", unit: 12 },
+    { id: 449, greek: "φωνέω", english: "I call, shout (verb)", section: "List 8", type: "list", unit: 8 },
+    { id: 450, greek: "φωνή, -ῆς, ἡ", english: "sound (noun)", section: "Chapter 9", type: "ch", unit: 9 },
+    { id: 451, greek: "φῶς, φωτός, τό", english: "light (noun)", section: "List 3", type: "list", unit: 3 },
+    { id: 452, greek: "χαίρω", english: "I rejoice (verb)", section: "List 3", type: "list", unit: 3 },
+    { id: 453, greek: "χαρά, -ᾶς, ἡ", english: "joy, delight, gladness (noun)", section: "List 5", type: "list", unit: 5 },
+    { id: 454, greek: "χάρις, -ιτος, ἡ", english: "grace, favor (noun)", section: "Chapter 8", type: "ch", unit: 8 },
+    { id: 455, greek: "χείρ, χειρός, ἡ", english: "hand, arm, finger (noun)", section: "Chapter 4", type: "ch", unit: 4 },
+    { id: 456, greek: "χρεία, -ας, ἡ", english: "need (noun)", section: "List 7", type: "list", unit: 7 },
+    { id: 457, greek: "Χριστός, -οῦ, ὁ", english: "Christ (pr. noun)", section: "Chapter 1", type: "ch", unit: 1 },
+    { id: 458, greek: "χρόνος, -ου, ὁ", english: "time (noun)", section: "List 6", type: "list", unit: 6 },
+    { id: 459, greek: "χωρίς", english: "(+gen.) without; separately (prep./adv.)", section: "List 9", type: "list", unit: 9 },
+    { id: 460, greek: "ψυχή, -ῆς, ἡ", english: "soul, life, self (noun)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 461, greek: "ὧδε", english: "here; in this way, so, thus (adv.)", section: "List 5", type: "list", unit: 5 },
+    { id: 462, greek: "ὥρα, -ας, ἡ", english: "hour, occasion, moment (noun)", section: "Chapter 11", type: "ch", unit: 11 },
+    { id: 463, greek: "ὥσπερ", english: "as, just as (particle)", section: "List 11", type: "list", unit: 11 },
+    { id: 464, greek: "ὥστε", english: "therefore, so that, in order that (conj.)", section: "List 2", type: "list", unit: 2 },
+    { id: 465, greek: "γέγονα", english: "I have become (perfect of γίνομαι)", section: "List 13", type: "list", unit: 13 },
+    { id: 466, greek: "εἶδον", english: "I saw (2nd Aorist of ὁράω)", section: "List 13", type: "list", unit: 13 },
+    { id: 467, greek: "εἶπον", english: "I said (2nd Aorist of λέγω)", section: "List 13", type: "list", unit: 13 },
+    { id: 468, greek: "εὕρηκα", english: "I have found (perfect of εὑρίσκω)", section: "List 13", type: "list", unit: 13 },
+    { id: 469, greek: "εὗρον", english: "I found (Aorist of εὑρίσκω)", section: "List 13", type: "list", unit: 13 },
+    { id: 470, greek: "ἀκήκοα", english: "I have heard (perfect of ἀκούω)", section: "List 13", type: "list", unit: 13 },
+    { id: 471, greek: "ἀπέθανον", english: "I died (Aorist of ἀποθνῄσκω)", section: "List 13", type: "list", unit: 13 },
+    { id: 472, greek: "ἐγενόμην", english: "I had been (Aorist middle of γίνομαι)", section: "List 13", type: "list", unit: 13 },
+    { id: 473, greek: "ἐλήλυθα", english: "I have come, gone (perfect of ἔρχομαι)", section: "List 13", type: "list", unit: 13 },
+    { id: 474, greek: "ἐληλύθειν", english: "I was coming (pluperfect of ἔρχομαι)", section: "List 13", type: "list", unit: 13 },
+    { id: 475, greek: "ἔβαλον", english: "I threw (Aorist of βάλλω)", section: "List 13", type: "list", unit: 13 },
+    { id: 476, greek: "ἔγνων", english: "I knew (Aorist of γινώσκω)", section: "List 13", type: "list", unit: 13 },
+    { id: 477, greek: "ἔλαβον", english: "I took, received (Aorist of λαμβάνω)", section: "List 13", type: "list", unit: 13 },
+    { id: 478, greek: "ἔπεσον", english: "I fall, fell (2Aorist of πίπτω)", section: "List 13", type: "list", unit: 13 },
+    { id: 479, greek: "ἔπιον", english: "I drank (Aorist of πίνω)", section: "List 13", type: "list", unit: 13 },
+    { id: 480, greek: "ἔσχον", english: "I had (Aorist of ἔχω)", section: "List 13", type: "list", unit: 13 },
+    { id: 481, greek: "ἔφαγον", english: "I ate (Aorist of ἐσθίω)", section: "List 13", type: "list", unit: 13 },
+    { id: 482, greek: "ἤγαγον", english: "I brought, led (Aorist of ἄγω)", section: "List 13", type: "list", unit: 13 },
+    { id: 483, greek: "ἤνεγκα", english: "I brought, bore, carried (Aorist of φέρω)", section: "List 13", type: "list", unit: 13 },
+    { id: 484, greek: "ἦλθον", english: "I came, went (2nd Aorist of ἔρχομαι)", section: "List 13", type: "list", unit: 13 }
+  ];
+
+  // App State
+  // Paradigm data transcribed from the supplied Logos Greek Paradigms chart.
+  // Each reviewable item retains its category, subsection, paradigm and row label.
+  const paradigmSections = [
+    { id:'articles', category:'Articles + Pronouns', title:'Definite Article', note:'Masculine, feminine, and neuter articles', headers:['Label','Masc.','Fem.','Neut.'], rows:[
+      ['S N','ὁ','ἡ','τό'],['S G','τοῦ','τῆς','τοῦ'],['S D','τῷ','τῇ','τῷ'],['S A','τόν','τήν','τό'],['P N','οἱ','αἱ','τά'],['P G','τῶν','τῶν','τῶν'],['P D','τοῖς','ταῖς','τοῖς'],['P A','τούς','τάς','τά'] ] },
+    { id:'personal-pronouns', category:'Articles + Pronouns', title:'Personal Pronouns', note:'1st, 2nd, and 3rd-person pronouns', headers:['Label','1P','2P','3P Masc.','3P Fem.','3P Neut.'], rows:[
+      ['S N','ἐγώ','σύ','αὐτός','αὐτή','αὐτό'],['S G','ἐμοῦ, μου','σοῦ, σου','αὐτοῦ','αὐτῆς','αὐτοῦ'],['S D','ἐμοί, μοι','σοί, σοι','αὐτῷ','αὐτῇ','αὐτῷ'],['S A','ἐμέ, με','σέ, σε','αὐτόν','αὐτήν','αὐτό'],['P N','ἡμεῖς','ὑμεῖς','αὐτοί','αὐταί','αὐτά'],['P G','ἡμῶν','ὑμῶν','αὐτῶν','αὐτῶν','αὐτῶν'],['P D','ἡμῖν','ὑμῖν','αὐτοῖς','αὐταῖς','αὐτοῖς'],['P A','ἡμᾶς','ὑμᾶς','αὐτούς','αὐτάς','αὐτά'] ] },
+    { id:'indefinite-pronoun', category:'Articles + Pronouns', title:'Indefinite Pronoun', note:'τίς / τι', headers:['Label','Masc./Fem.','Neut.'], rows:[
+      ['S N','τις','τι'],['S G','τινός','τινός'],['S D','τινί','τινί'],['S A','τινά','τι'],['P N','τινές','τινά'],['P G','τινῶν','τινῶν'],['P D','τισί(ν)','τισί(ν)'],['P A','τινάς','τινά'] ] },
+    { id:'noun-declensions', category:'Noun Declensions', title:'3rd-Declension Noun Endings', note:'Masc./fem. and neuter endings', headers:['Label','Masc./Fem.','Neut.'], rows:[
+      ['S N','ς / none','none'],['S G','ος (ως, ους)','ος (ως, ους)'],['S D','ι','ι'],['S A','α or ν','none'],['P N','ες (εις)','α'],['P G','ων','ων'],['P D','σι(ν)','σι(ν)'],['P A','ας (εις)','α'] ] },
+    { id:'indicative-present', category:'Verb Indicative Forms', title:'Present & Imperfect Indicative', note:'λύω paradigms', headers:['Person','Present Active','Present Middle/Passive','Imperfect Active','Imperfect Middle/Passive'], rows:[
+      ['1S','λύ-ω','λύ-ο-μαι','ἔ-λυ-ο-ν','ἐ-λυ-ό-μην'],['2S','λύ-εις','λύ-ῃ','ἔ-λυ-ε-ς','ἐ-λύ-ου'],['3S','λύ-ει','λύ-ε-ται','ἔ-λυ-ε(ν)','ἐ-λύ-ε-το'],['1P','λύ-ο-μεν','λυ-ό-μεθα','ἐ-λύ-ο-μεν','ἐ-λυ-ό-μεθα'],['2P','λύ-ε-τε','λύ-ε-σθε','ἐ-λύ-ε-τε','ἐ-λύ-ε-σθε'],['3P','λύ-ου-σι(ν)','λύ-ο-νται','ἔ-λυ-ο-ν','ἐ-λύ-ο-ντο'] ] },
+    { id:'indicative-future-aorist', category:'Verb Indicative Forms', title:'Future & 1st Aorist Indicative', note:'Active and middle forms', headers:['Person','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle'], rows:[
+      ['1S','λύ-σ-ω','λύ-σ-ο-μαι','ἔ-λυ-σα','ἐ-λυ-σά-μην'],['2S','λύ-σ-εις','λύ-σ-ῃ','ἔ-λυ-σα-ς','ἐ-λύ-σω'],['3S','λύ-σ-ει','λύ-σ-ε-ται','ἔ-λυ-σε(ν)','ἐ-λύ-σα-το'],['1P','λύ-σ-ο-μεν','λυ-σ-ό-μεθα','ἐ-λύ-σα-μεν','ἐ-λυ-σά-μεθα'],['2P','λύ-σ-ε-τε','λύ-σ-ε-σθε','ἐ-λύ-σα-τε','ἐ-λύ-σα-σθε'],['3P','λύ-σ-ουσι(ν)','λύ-σ-ο-νται','ἔ-λυ-σα-ν','ἐ-λύ-σα-ντο'] ] },
+    { id:'indicative-perfect', category:'Verb Indicative Forms', title:'Perfect & Pluperfect Indicative', note:'Active and middle/passive forms', headers:['Person','Perfect Active','Pluperfect Active','Perfect Middle/Passive'], rows:[
+      ['1S','λέ-λυ-κα','ἐ-λε-λύ-κει-ν','λέ-λυ-μαι'],['2S','λέ-λυ-κας','ἐ-λε-λύ-κει-ς','λέ-λυ-σαι'],['3S','λέ-λυ-κε(ν)','ἐ-λε-λύ-κει','λέ-λυ-ται'],['1P','λε-λύ-κα-μεν','ἐ-λε-λύ-κει-μεν','λε-λύ-μεθα'],['2P','λε-λύ-κα-τε','ἐ-λε-λύ-κει-τε','λέ-λυ-σθε'],['3P','λε-λύ-κα-σι(ν)','ἐ-λε-λύ-κει-σαν','λέ-λυ-νται'],['3P alt.','λέ-λυ-καν','',''] ] },
+    { id:'indicative-passive', category:'Verb Indicative Forms', title:'Aorist & Future Passive Indicative', note:'Passive forms', headers:['Person','1st Aorist Passive','Future Passive'], rows:[
+      ['1S','ἐ-λύ-θη-ν','λυ-θήσ-ο-μαι'],['2S','ἐ-λύ-θη-ς','λυ-θήσ-ῃ'],['3S','ἐ-λύ-θη','λυ-θήσ-ε-ται'],['1P','ἐ-λύ-θη-μεν','λυ-θησ-ό-μεθα'],['2P','ἐ-λύ-θη-τε','λυ-θήσ-ε-σθε'],['3P','ἐ-λύ-θη-σαν','λυ-θήσ-ο-νται'] ] },
+    { id:'subjunctive', category:'Subjunctive', title:'Subjunctive', note:'Present active/M-P, 1st aorist active/M-P, perfect active, 1st aorist passive', headers:['Person','Present Active','Present Middle/Passive','1st Aorist Active','1st Aorist Middle','Perfect Active','1st Aorist Passive'], rows:[
+      ['1S','λύ-ω','λύ-ω-μαι','λύ-σ-ω','λύ-σ-ω-μαι','λε-λύ-κω','λυ-θ-ῶ'],['2S','λύ-ῃς','λύ-ῃ','λύ-σ-ῃς','λύ-σ-ῃ','λε-λύ-κῃς','λυ-θ-ῇς'],['3S','λύ-ῃ','λύ-η-ται','λύ-σ-ῃ','λύ-σ-η-ται','λε-λύ-κῃ','λυ-θ-ῇ'],['1P','λύ-ω-μεν','λυ-ώ-μεθα','λύ-σ-ω-μεν','λυ-σ-ώ-μεθα','λε-λύ-κω-μεν','λυ-θ-ῶ-μεν'],['2P','λύ-η-τε','λύ-η-σθε','λύ-σ-η-τε','λύ-σ-η-σθε','λε-λύ-κη-τε','λυ-θ-ῆ-τε'],['3P','λύ-ω-σι(ν)','λύ-ω-νται','λύ-σ-ω-σι(ν)','λύ-σ-ω-νται','λε-λύ-κω-σι(ν)','λυ-θ-ῶ-σι(ν)'] ] },
+    { id:'imperative', category:'Imperative', title:'Imperative', note:'Present active/M-P, 1st aorist active/M-P, 1st aorist passive', headers:['Person','Present Active','Present Middle/Passive','1st Aorist Active','1st Aorist Middle','1st Aorist Passive'], rows:[
+      ['2S','λύ-ε','λύ-ου','λύ-σον','λύ-σαι','λύ-θη-τι'],['3S','λυ-έ-τω','λυ-έ-σθω','λυ-σά-τω','λυ-σά-σθω','λυ-θή-τω'],['2P','λύ-ε-τε','λύ-ε-σθε','λύ-σα-τε','λύ-σα-σθε','λύ-θη-τε'],['3P','λυ-έ-τω-σαν','λυ-έ-σθω-σαν','λυ-σά-τω-σαν','λυ-σά-σθωσαν','λυ-θή-τω-σαν'] ] },
+    { id:'infinitive', category:'Infinitive', title:'Infinitive', note:'All infinitive forms shown', headers:['Form','Greek'], rows:[
+      ['Present Active','λύ-ειν'],['Present Middle/Passive','λύ-ε-σθαι'],['Future Active','λύ-σ-ειν'],['Future Middle','λύ-σ-ε-σθαι'],['1st Aorist Active','λύ-σαι'],['1st Aorist Middle','λύ-σα-σθαι'],['Perfect Active','λε-λυ-κέ-ναι'],['Perfect Middle/Passive','λε-λύ-σθαι'],['1st Aorist Passive','λυ-θῆ-ναι'],['Future Passive','λυ-θήσ-ε-σθαι'] ] },
+    { id:'participles', category:'Participles', title:'Participles', note:'Masculine, feminine, and neuter participial forms', headers:['Gender','Present Active','Present Middle/Passive','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle','Perfect Active','Perfect Middle/Passive','1st Aorist Passive'], rows:[
+      ['Masc.','λύ-ων','λυ-ό-μεν-ος','λύ-σ-ων','λυ-σ-ό-μεν-ος','λύ-σας','λυ-σά-μεν-ος','λε-λυ-κώς','λε-λυ-μέν-ος','λυ-θείς'],['Fem.','λύ-ουσα','λυ-ο-μέν-η','λύ-σ-ουσα','λυ-σ-ο-μέν-η','λύ-σασα','λυ-σα-μέν-η','λε-λυ-κυῖα','λε-λυ-μέν-η','λυ-θεῖσα'],['Neut.','λῦ-ον','λυ-ό-μεν-ον','λύ-σ-ον','λυ-σ-ό-μεν-ον','λῦ-σαν','λυ-σά-μεν-ον','λε-λυ-κός','λε-λυ-μέν-ον','λυ-θέν'] ] }
+  ];
+  const indicativeTenseHeaders = ['Present Active','Present Middle/Passive','Imperfect Active','Imperfect Middle/Passive','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle','Perfect Active','Pluperfect Active','Perfect Middle/Passive','1st Aorist Passive','Future Passive'];
+  const indicativeSource = paradigmSections.filter(section => section.id.indexOf('indicative-') === 0);
+  const indicativeRows = ['1S','2S','3S','1P','2P','3P'].map(label => [label, ...indicativeTenseHeaders.map(header => { const source = indicativeSource.find(section => section.headers.includes(header)); const row = source && source.rows.find(entry => entry[0] === label); return row ? row[source.headers.indexOf(header)] : ''; })]);
+  paradigmSections.splice(4, 0, { id:'indicative-tenses', category:'Verb Indicative Forms', title:'Indicative', note:'Choose one or more tenses to study, quiz, or fill together', headers:['Person', ...indicativeTenseHeaders], rows:indicativeRows, virtual:true });
+  const paradigmItems = paradigmSections.flatMap(section => section.rows.flatMap(row => section.headers.slice(1).map((header, i) => ({ category:section.category, section:section.id, paradigm:section.title, label: `${header} — ${row[0]}`, column:header, rowLabel:row[0], answer:row[i + 1] })).filter(item => item.answer)));
+  let selectedParadigmSection = 'indicative-tenses', paradigmFamily = 'verb', studyMorphemeHyphens = false, studyHideOnClick = true, studyHiddenCells = new Set(), paradigmQuiz = { deck:[], index:0, correct:0, missed:[], answered:false };
+
+  let rawDeck = [];
+  let currentDeck = [];
+  let currentIndex = 0;
+  let starredIds = new Set();
+  let currentSingleTab = 'ch';
+  let isShuffleOn = true;
+  let pendingSource = null;
+  let testSelections = {};
+  let navigationHistory = [];
+
+  // Sections definitions
+  const chaptersList = Array.from({length: 11}, (_, i) => `Chapter ${i + 1}`);
+  const listsList = Array.from({length: 13}, (_, i) => `List ${i + 1}`);
+
+  // Init App
+  function init() {
+    const saved = localStorage.getItem('biblicalGreekStarred');
+    if (saved) {
+      try { starredIds = new Set(JSON.parse(saved)); } catch(e){}
+    }
+
+    renderSingleGrid();
+    renderMultiGrid();
+    const savedParadigmSection = localStorage.getItem('biblicalGreekParadigmSection');
+    if (savedParadigmSection && paradigmSections.some(section => section.id === savedParadigmSection)) selectedParadigmSection = savedParadigmSection;
+    initParadigmReview();
+
+    // Keyboard navigation for flashcards
+    document.addEventListener('keydown', (e) => {
+      const fcScreen = document.getElementById('screen-flashcard');
+      if (fcScreen.classList.contains('active')) {
+        if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+          e.preventDefault();
+          flipCard();
+        } else if (e.code === 'ArrowRight') {
+          nextCard();
+        } else if (e.code === 'ArrowLeft') {
+          prevCard();
+        } else if (e.code === 'KeyS') {
+          toggleStar();
+        }
+      }
+    });
+  }
+
+  // Navigation
+  function goTo(screenName, addToHistory = true) {
+    const activeScreen = document.querySelector('.screen.active');
+    const currentScreen = activeScreen ? activeScreen.id.replace('screen-', '') : null;
+    if (addToHistory && currentScreen && currentScreen !== screenName) navigationHistory.push(currentScreen);
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    closeModeModal();
+    
+    if (screenName === 'home') document.getElementById('screen-home').classList.add('active');
+    if (screenName === 'vocab-home') document.getElementById('screen-vocab-home').classList.add('active');
+    if (screenName === 'chapter') document.getElementById('screen-chapter').classList.add('active');
+    if (screenName === 'multi') document.getElementById('screen-multi').classList.add('active');
+    if (screenName === 'paradigm-home') { initParadigmReview(); document.getElementById('screen-paradigm-home').classList.add('active'); }
+    if (screenName === 'paradigm-study') document.getElementById('screen-paradigm-study').classList.add('active');
+    if (screenName === 'paradigm-quiz') document.getElementById('screen-paradigm-quiz').classList.add('active');
+    if (screenName === 'paradigm-fill') document.getElementById('screen-paradigm-fill').classList.add('active');
+  }
+
+  function goBack() {
+    const previousScreen = navigationHistory.pop();
+    goTo(previousScreen || 'home', false);
+  }
+
+  // Single Section Tab Switch
+  function switchSingleTab(type) {
+    currentSingleTab = type;
+    document.getElementById('tab-ch').classList.toggle('active', type === 'ch');
+    document.getElementById('tab-list').classList.toggle('active', type === 'list');
+    renderSingleGrid();
+  }
+
+  function renderSingleGrid() {
+    const container = document.getElementById('single-grid-container');
+    container.innerHTML = '';
+    
+    const targets = currentSingleTab === 'ch' ? chaptersList : listsList;
+
+    targets.forEach(secName => {
+      const count = vocabData.filter(v => v.section === secName).length;
+      const btn = document.createElement('div');
+      btn.className = 'section-btn';
+      btn.innerHTML = `<div class="sec-name">${secName}</div><div class="sec-count">${count} words</div>`;
+      btn.onclick = () => openSingleChoice(secName);
+      container.appendChild(btn);
+    });
+  }
+
+  // Render Multi-select Grid
+  function renderMultiGrid() {
+    const chContainer = document.getElementById('multi-ch-grid');
+    const listContainer = document.getElementById('multi-list-grid');
+    chContainer.innerHTML = '';
+    listContainer.innerHTML = '';
+
+    chaptersList.forEach(sec => {
+      const count = vocabData.filter(v => v.section === sec).length;
+      const label = document.createElement('label');
+      label.className = 'ch-checkbox-row';
+      label.innerHTML = `<input type="checkbox" value="${sec}" class="multi-cb multi-cb-ch"> ${sec} <span style="font-size:12px;color:var(--muted)">(${count})</span>`;
+      chContainer.appendChild(label);
+    });
+
+    listsList.forEach(sec => {
+      const count = vocabData.filter(v => v.section === sec).length;
+      const label = document.createElement('label');
+      label.className = 'ch-checkbox-row';
+      label.innerHTML = `<input type="checkbox" value="${sec}" class="multi-cb multi-cb-list"> ${sec} <span style="font-size:12px;color:var(--muted)">(${count})</span>`;
+      listContainer.appendChild(label);
+    });
+  }
+
+  function selectAll(type) {
+    const selector = type === 'ch' ? '.multi-cb-ch' : '.multi-cb-list';
+    document.querySelectorAll(selector).forEach(cb => cb.checked = true);
+  }
+
+  function clearAllSelections() {
+    document.querySelectorAll('.multi-cb').forEach(cb => cb.checked = false);
+  }
+
+  // MODE MODAL CONTROL
+  function openSingleChoice(secName) {
+    pendingSource = { type: 'single', value: secName };
+    document.getElementById('modal-section-title').innerText = secName;
+    document.getElementById('mode-modal').classList.add('active');
+  }
+
+  function openStarredChoice() {
+    const count = vocabData.filter(v => starredIds.has(v.id)).length;
+    if (count === 0) {
+      alert("You have not starred any words yet! Click the ★ on any card to save it here.");
+      return;
+    }
+    pendingSource = { type: 'starred' };
+    document.getElementById('modal-section-title').innerText = "Starred Vocabulary (" + count + " words)";
+    document.getElementById('mode-modal').classList.add('active');
+  }
+
+  function closeModeModal() {
+    document.getElementById('mode-modal').classList.remove('active');
+  }
+
+  function confirmModeSelection(mode) {
+    closeModeModal();
+    if (!pendingSource) return;
+
+    if (pendingSource.type === 'single') {
+      rawDeck = vocabData.filter(v => v.section === pendingSource.value);
+    } else if (pendingSource.type === 'starred') {
+      rawDeck = vocabData.filter(v => starredIds.has(v.id));
+    }
+
+    launchReviewMode(mode);
+  }
+
+  function startMultiReview(mode) {
+    const selected = Array.from(document.querySelectorAll('.multi-cb:checked')).map(cb => cb.value);
+    if (selected.length === 0) {
+      alert("Please select at least one Chapter or List.");
+      return;
+    }
+    rawDeck = vocabData.filter(v => selected.includes(v.section));
+    launchReviewMode(mode);
+  }
+
+  function launchReviewMode(mode) {
+    // Sync shuffle UI switches
+    document.getElementById('fc-shuffle-toggle').checked = isShuffleOn;
+    document.getElementById('test-shuffle-toggle').checked = isShuffleOn;
+
+    prepareDeck();
+
+    if (mode === 'flashcards') {
+      beginFlashcards();
+    } else if (mode === 'test') {
+      beginListTest();
+    }
+  }
+
+  function prepareDeck() {
+    currentDeck = [...rawDeck];
+    if (isShuffleOn) {
+      shuffleArray(currentDeck);
+    }
+  }
+
+  // SHUFFLE TOGGLE CONTROLS
+  function toggleShuffle(checked) {
+    isShuffleOn = checked;
+    document.getElementById('test-shuffle-toggle').checked = checked;
+    prepareDeck();
+    currentIndex = 0;
+    renderCard();
+  }
+
+  function toggleTestShuffle(checked) {
+    isShuffleOn = checked;
+    document.getElementById('fc-shuffle-toggle').checked = checked;
+    prepareDeck();
+    renderTestList();
+  }
+
+  // FLASHCARD LOGIC
+  function beginFlashcards() {
+    currentIndex = 0;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-flashcard').classList.add('active');
+    renderCard();
+  }
+
+  function renderCard() {
+    const fcElem = document.getElementById('fc-element');
+    fcElem.classList.remove('flipped');
+    
+    setTimeout(() => {
+      const word = currentDeck[currentIndex];
+      document.getElementById('fc-greek-text').innerText = word.greek;
+      document.getElementById('fc-english-text').innerText = word.english;
+      document.getElementById('fc-meta-text').innerText = word.section;
+      document.getElementById('fc-progress').innerText = `${currentIndex + 1} / ${currentDeck.length}`;
+      
+      const starBtn = document.getElementById('fc-star');
+      if (starredIds.has(word.id)) {
+        starBtn.classList.add('active');
+      } else {
+        starBtn.classList.remove('active');
+      }
+    }, 120);
+  }
+
+  function flipCard() {
+    document.getElementById('fc-element').classList.toggle('flipped');
+  }
+
+  function nextCard() {
+    if (currentIndex < currentDeck.length - 1) {
+      currentIndex++;
+      renderCard();
+    } else {
+      alert("You have completed this review set!");
+      goTo('home');
+    }
+  }
+
+  function prevCard() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderCard();
+    }
+  }
+
+  function toggleStar(e) {
+    if (e) e.stopPropagation();
+    if (!currentDeck[currentIndex]) return;
+    
+    const wordId = currentDeck[currentIndex].id;
+    if (starredIds.has(wordId)) {
+      starredIds.delete(wordId);
+    } else {
+      starredIds.add(wordId);
+    }
+    
+    localStorage.setItem('biblicalGreekStarred', JSON.stringify(Array.from(starredIds)));
+    document.getElementById('fc-star').classList.toggle('active', starredIds.has(wordId));
+  }
+
+  // LIST TEST MODE LOGIC
+  function beginListTest() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-test').classList.add('active');
+    document.getElementById('test-score-banner').style.display = 'none';
+    testSelections = {};
+    renderTestList();
+  }
+
+  function renderTestList() {
+    const container = document.getElementById('test-list-container');
+    container.innerHTML = '';
+
+    const allEnglish = vocabData.map(v => v.english);
+
+    currentDeck.forEach((word, index) => {
+      const row = document.createElement('div');
+      row.className = 'test-row';
+      row.id = `test-row-${index}`;
+
+      let distractors = allEnglish.filter(e => e !== word.english);
+      shuffleArray(distractors);
+      let options = [word.english, ...distractors.slice(0, 3)];
+      shuffleArray(options);
+
+      let optionsHtml = `<option value="">-- Select Meaning --</option>`;
+      options.forEach(opt => {
+        optionsHtml += `<option value="${escapeHtml(opt)}"${testSelections[index] === opt ? ' selected' : ''}>${escapeHtml(opt)}</option>`;
+      });
+
+      const starClass = starredIds.has(word.id) ? ' active' : '';
+      row.innerHTML = `
+        <div class="test-left">
+          <button class="test-star-btn${starClass}" id="test-star-${index}" onclick="toggleTestStar(event, ${index})" title="Star this word">★</button>
+          <span class="test-num">${index + 1}.</span>
+          <span class="test-greek">${word.greek}</span>
+        </div>
+        <div class="test-right">
+          <select class="test-select" id="test-select-${index}" onchange="saveTestSelection(${index}, this.value)">
+            ${optionsHtml}
+          </select>
+          <div class="correct-answer-hint" id="test-hint-${index}" style="display:none;"></div>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function saveTestSelection(index, value) {
+    if (value) {
+      testSelections[index] = value;
+    } else {
+      delete testSelections[index];
+    }
+  }
+
+  function checkTestAnswers() {
+    let correctCount = 0;
+    currentDeck.forEach((word, index) => {
+      const row = document.getElementById(`test-row-${index}`);
+      const select = document.getElementById(`test-select-${index}`);
+      const hint = document.getElementById(`test-hint-${index}`);
+      
+      const userAns = select.value;
+      if (userAns === word.english) {
+        correctCount++;
+        row.className = 'test-row correct';
+        hint.style.display = 'none';
+      } else {
+        row.className = 'test-row incorrect';
+        hint.innerText = `Correct: ${word.english}`;
+        hint.style.display = 'block';
+      }
+    });
+
+    const banner = document.getElementById('test-score-banner');
+    const scorePct = Math.round((correctCount / currentDeck.length) * 100);
+    banner.innerText = `Score: ${correctCount} / ${currentDeck.length} (${scorePct}%)`;
+    banner.style.display = 'block';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetTest() {
+    document.getElementById('test-score-banner').style.display = 'none';
+    renderTestList();
+  }
+
+  function toggleTestStar(e, index) {
+    e.stopPropagation();
+    const word = currentDeck[index];
+    if (!word) return;
+
+    if (starredIds.has(word.id)) {
+      starredIds.delete(word.id);
+    } else {
+      starredIds.add(word.id);
+    }
+
+    localStorage.setItem('biblicalGreekStarred', JSON.stringify(Array.from(starredIds)));
+    renderTestList();
+  }
+
+  // PARADIGM REVIEW FUNCTIONS
+  function initParadigmReview() {
+    const grid = document.getElementById('paradigm-section-grid');
+    const select = document.getElementById('paradigm-section-select');
+    if (!grid || !select) return;
+    grid.innerHTML = ''; select.innerHTML = '';
+    document.getElementById('family-verb').classList.toggle('active', paradigmFamily === 'verb');
+    document.getElementById('family-nonverb').classList.toggle('active', paradigmFamily === 'nonverb');
+    // The individual indicative blocks remain in the data so the selector can build
+    // its combined chart, but only the all-tense selector is shown as a review card.
+    const shownSections = paradigmSections.filter(section =>
+      (paradigmFamily === 'verb') === isVerbSection(section) &&
+      !['indicative-present', 'indicative-future-aorist', 'indicative-perfect', 'indicative-passive'].includes(section.id)
+    );
+    if (!shownSections.some(section => section.id === selectedParadigmSection)) selectedParadigmSection = shownSections[0].id;
+    shownSections.forEach(section => {
+      const count = paradigmItems.filter(item => item.section === section.id).length;
+      const card = document.createElement('button'); card.className = 'paradigm-card' + (section.id === selectedParadigmSection ? ' selected' : '');
+      card.innerHTML = `<h3>${escapeHtml(section.title)}</h3><p>${escapeHtml(section.note)} · ${count} forms</p>`;
+      card.onclick = () => { selectParadigmSection(section.id); openStudyChart(); }; grid.appendChild(card);
+      const option = document.createElement('option'); option.value = section.id; option.textContent = `${section.title} (${count} forms)`; select.appendChild(option);
+    });
+    select.value = selectedParadigmSection;
+    renderTensePicker();
+  }
+  function isVerbSection(section) { return section.category === 'Verb Indicative Forms' || ['Subjunctive','Imperative','Infinitive','Participles'].includes(section.category); }
+  function setParadigmFamily(family) { paradigmFamily = family; initParadigmReview(); }
+  function selectParadigmSection(id) { selectedParadigmSection = id; localStorage.setItem('biblicalGreekParadigmSection', id); initParadigmReview(); }
+  function getParadigmSection() { return paradigmSections.find(s => s.id === selectedParadigmSection) || paradigmSections[0]; }
+  function getSavedParadigmColumns() { return JSON.parse(localStorage.getItem('biblicalGreekParadigmColumns') || '{}'); }
+  function getSavedParadigmRows() { return JSON.parse(localStorage.getItem('biblicalGreekParadigmRows') || '{}'); }
+  function getSelectedColumns(section) { const columns = section.headers.slice(1), saved = getSavedParadigmColumns()[section.id]; if (saved) return columns.filter(column => saved.includes(column)); if (section.id === 'indicative-tenses') return JSON.parse(localStorage.getItem('biblicalGreekIndicativeTenses') || 'null') || columns; return columns; }
+  function getSelectedRows(section) { const rows = section.rows.map(row => row[0]), saved = getSavedParadigmRows()[section.id]; return saved ? rows.filter(row => saved.includes(row)) : rows; }
+  function getSelectedTenses() { return Array.from(document.querySelectorAll('#tense-picker input:checked')).map(input => input.value); }
+  function renderTensePicker() { const section = getParadigmSection(), picker = document.getElementById('tense-picker'); if (!isVerbSection(section) || section.headers.length < 2) { picker.hidden = true; return; } const rows = section.id === 'infinitive', options = rows ? section.rows.map(row => row[0]) : section.headers.slice(1), saved = rows ? getSelectedRows(section) : getSelectedColumns(section); picker.hidden = options.length < 2; picker.innerHTML = `<strong>${escapeHtml(section.title)} forms to review</strong>${options.map(option => `<label><input type="checkbox" value="${escapeHtml(option)}" ${saved.includes(option) ? 'checked' : ''} onchange="saveIndicativeTenses()">${escapeHtml(option)}</label>`).join('')}`; }
+  function saveIndicativeTenses() { const section = getParadigmSection(), selected = getSelectedTenses(); if (section.id === 'infinitive') { const selections = getSavedParadigmRows(); selections[section.id] = selected; localStorage.setItem('biblicalGreekParadigmRows', JSON.stringify(selections)); } else { const selections = getSavedParadigmColumns(); selections[selectedParadigmSection] = selected; localStorage.setItem('biblicalGreekParadigmColumns', JSON.stringify(selections)); if (selectedParadigmSection === 'indicative-tenses') localStorage.setItem('biblicalGreekIndicativeTenses', JSON.stringify(selected)); } }
+  function renderStudyTensePicker() { const picker = document.getElementById('indicative-study-tense-picker'), section = getParadigmSection(); if (!isVerbSection(section) || section.headers.length < 2) { picker.hidden = true; return; } const rows = section.id === 'infinitive', options = rows ? section.rows.map(row => row[0]) : section.headers.slice(1), saved = rows ? getSelectedRows(section) : getSelectedColumns(section); picker.hidden = options.length < 2; picker.innerHTML = `<strong>${escapeHtml(section.title)} forms to show</strong>${options.map(option => `<label><input type="checkbox" value="${escapeHtml(option)}" ${saved.includes(option) ? 'checked' : ''} onchange="saveStudyIndicativeTenses()">${escapeHtml(option)}</label>`).join('')}`; }
+  function saveStudyIndicativeTenses() { const section = getParadigmSection(), selected = Array.from(document.querySelectorAll('#indicative-study-tense-picker input:checked')).map(input => input.value); if (section.id === 'infinitive') { const selections = getSavedParadigmRows(); selections[section.id] = selected; localStorage.setItem('biblicalGreekParadigmRows', JSON.stringify(selections)); } else { const selections = getSavedParadigmColumns(); selections[selectedParadigmSection] = selected; localStorage.setItem('biblicalGreekParadigmColumns', JSON.stringify(selections)); if (selectedParadigmSection === 'indicative-tenses') localStorage.setItem('biblicalGreekIndicativeTenses', JSON.stringify(selected)); } renderTensePicker(); renderStudyTensePicker(); if (selected.length) renderStudyChart(); }
+  function visibleColumns(section) { return isVerbSection(section) ? getSelectedColumns(section) : section.headers.slice(1); }
+  function visibleRows(section) { return section.id === 'infinitive' ? section.rows.filter(row => getSelectedRows(section).includes(row[0])) : section.rows; }
+  // Raw forms retain their morpheme hyphens for reliable answer comparisons. Displayed
+  // forms are normalized everywhere except the optional Study Chart hyphen view.
+  function displayParadigmForm(form, showHyphens = false) { return showHyphens ? form : String(form || '').replace(/-/g, ''); }
+  function openStudyChart() { const section = getParadigmSection(); if (!visibleColumns(section).length || !visibleRows(section).length) { alert('Select at least one form.'); return; } document.getElementById('study-title').textContent = section.title; studyHiddenCells.clear(); renderStudyTensePicker(); renderStudyChart(); goTo('paradigm-study'); }
+  function renderStudyChart() { const section = getParadigmSection(), columns = visibleColumns(section), target = document.getElementById('study-chart'); document.getElementById('study-hyphen-toggle').checked = studyMorphemeHyphens; document.getElementById('study-click-toggle').checked = studyHideOnClick; target.innerHTML = `<table class="study-table"><thead><tr><th>${escapeHtml(section.headers[0])}</th>${columns.map((header, columnIndex) => `<th role="button" tabindex="0" onclick="toggleStudyColumn(${columnIndex})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStudyColumn(${columnIndex})}">${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${section.rows.map((row, rowIndex) => ({ row, rowIndex })).filter(({ row }) => visibleRows(section).includes(row)).map(({ row, rowIndex }) => `<tr><td role="button" tabindex="0" onclick="toggleStudyRow(${rowIndex})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStudyRow(${rowIndex})}"><b>${escapeHtml(row[0])}</b></td>${columns.map((header, columnIndex) => { const form = row[section.headers.indexOf(header)] || '—'; const key = `${rowIndex}:${columnIndex}`; return `<td><span class="greek-form study-form${studyHiddenCells.has(key) ? ' word-hidden' : ''}" data-study-key="${key}" role="button" tabindex="0" aria-label="Hide or show ${escapeHtml(displayParadigmForm(form, studyMorphemeHyphens))}" onclick="toggleStudyForm(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStudyForm(this)}">${escapeHtml(displayParadigmForm(form, studyMorphemeHyphens))}</span></td>`; }).join('')}</tr>`).join('')}</tbody></table>`; }
+  function toggleStudyHyphens(checked) { studyMorphemeHyphens = checked; renderStudyChart(); }
+  function toggleStudyClick(checked) { studyHideOnClick = checked; }
+  function toggleStudyForm(form) { if (!studyHideOnClick) return; const key = form.dataset.studyKey; if (studyHiddenCells.has(key)) studyHiddenCells.delete(key); else studyHiddenCells.add(key); form.classList.toggle('word-hidden'); }
+  function toggleStudyColumn(columnIndex) { if (!studyHideOnClick) return; const section = getParadigmSection(), keys = section.rows.map((_, rowIndex) => `${rowIndex}:${columnIndex}`), shouldHide = keys.some(key => !studyHiddenCells.has(key)); keys.forEach(key => shouldHide ? studyHiddenCells.add(key) : studyHiddenCells.delete(key)); renderStudyChart(); }
+  function toggleStudyRow(rowIndex) { if (!studyHideOnClick) return; const section = getParadigmSection(), columns = visibleColumns(section), keys = columns.map((_, columnIndex) => `${rowIndex}:${columnIndex}`), shouldHide = keys.some(key => !studyHiddenCells.has(key)); keys.forEach(key => shouldHide ? studyHiddenCells.add(key) : studyHiddenCells.delete(key)); renderStudyChart(); }
+  function openFillChart() {
+    const section = getParadigmSection(), columns = visibleColumns(section); if (!columns.length) { alert('Select at least one indicative tense.'); return; }
+    document.getElementById('fill-title').textContent = `Fill in Chart — ${section.title}`; const pool = paradigmItems.filter(item => item.section === section.id && columns.includes(item.column));
+    document.getElementById('fill-chart').innerHTML = `<table class="study-table"><thead><tr><th>${escapeHtml(section.headers[0])}</th>${columns.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${visibleRows(section).map(row => `<tr><td><b>${escapeHtml(row[0])}</b></td>${columns.map(header => { const answer = row[section.headers.indexOf(header)]; if (!answer) return '<td>—</td>'; const choices = fillChoices(answer, pool); return `<td><select class="fill-select" data-answer="${escapeHtml(answer)}"><option value="">— select —</option>${choices.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(displayParadigmForm(value))}</option>`).join('')}</select></td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
+    document.getElementById('fill-feedback').textContent = ''; goTo('paradigm-fill');
+  }
+  function fillChoices(answer, pool) { const options = [answer, ...pool.filter(item => item.answer !== answer).map(item => item.answer)].filter((v,i,a) => a.indexOf(v) === i); shuffleArray(options); return options.slice(0, 4); }
+  function checkFillChart() { const selects = Array.from(document.querySelectorAll('#fill-chart .fill-select')); let correct = 0; selects.forEach(select => { const ok = select.value === select.dataset.answer; select.classList.toggle('correct', ok); select.classList.toggle('incorrect', !ok); if (ok) correct++; }); const feedback = document.getElementById('fill-feedback'); feedback.className = `quiz-feedback ${correct === selects.length ? 'correct' : 'incorrect'}`; feedback.textContent = `Score: ${correct} / ${selects.length}. ${correct === selects.length ? 'Chart complete!' : 'Incorrect cells are marked in red; choose again and recheck.'}`; }
+  function startParadigmQuiz(mode) {
+    const section = getParadigmSection(); let pool;
+    if (mode === 'focused') pool = paradigmItems.filter(item => item.section === section.id && (section.id !== 'infinitive' || getSelectedRows(section).includes(item.rowLabel)));
+    else if (mode === 'category') pool = paradigmItems.filter(item => item.category === section.category);
+    else pool = [...paradigmItems];
+    if (section.id === 'indicative-tenses') { const selected = visibleColumns(section); if (!selected.length) { alert('Select at least one indicative tense.'); return; } pool = pool.filter(item => selected.includes(item.column)); }
+    if (section.id === 'infinitive') { const selected = getSelectedRows(section); if (!selected.length) { alert('Select at least one infinitive form.'); return; } pool = pool.filter(item => selected.includes(item.rowLabel)); }
+    shuffleArray(pool); const chosen = document.getElementById('paradigm-count').value; const limit = chosen === 'all' ? pool.length : Math.min(Number(chosen), pool.length);
+    paradigmQuiz = { deck:pool.slice(0, limit), index:0, correct:0, missed:[], answered:false };
+    document.getElementById('paradigm-quiz-title').textContent = mode === 'focused' ? section.title : (mode === 'category' ? `${section.category} Mix` : 'Full Mixed Paradigm Quiz');
+    document.getElementById('paradigm-missed').innerHTML = ''; goTo('paradigm-quiz'); renderParadigmQuestion();
+  }
+  function distractorsFor(item) { const same = paradigmItems.filter(x => x.answer !== item.answer && (x.section === item.section || x.category === item.category)); const fallback = paradigmItems.filter(x => x.answer !== item.answer); shuffleArray(same); shuffleArray(fallback); const answers = [item.answer, ...same.map(x => x.answer), ...fallback.map(x => x.answer)].filter((v,i,a) => a.indexOf(v) === i).slice(0,4); shuffleArray(answers); return answers; }
+  function renderParadigmQuestion() {
+    const q = paradigmQuiz, card = document.getElementById('paradigm-quiz-card'), score = document.getElementById('paradigm-score'), bar = document.getElementById('paradigm-progress-bar');
+    score.textContent = `Score: ${q.correct} / ${q.index} · Question ${Math.min(q.index + 1, q.deck.length)} of ${q.deck.length}`; bar.style.width = `${q.deck.length ? (q.index / q.deck.length) * 100 : 0}%`;
+    if (q.index >= q.deck.length) { finishParadigmQuiz(); return; }
+    const item = q.deck[q.index], options = distractorsFor(item); card.innerHTML = `<div class="quiz-meta">${escapeHtml(item.category)} · ${escapeHtml(item.paradigm)}</div><div class="quiz-prompt">${escapeHtml(item.label)}</div><select class="quiz-select" id="paradigm-answer" onchange="answerParadigmQuestion(this.value)"><option value="">Select the correct Greek form…</option>${options.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(displayParadigmForm(value))}</option>`).join('')}</select><div class="quiz-feedback" id="paradigm-feedback"></div><button class="primary-btn" id="paradigm-next" onclick="nextParadigmQuestion()" style="display:none; margin-top:10px;">Next question</button>`;
+  }
+  function answerParadigmQuestion(answer) { if (!answer || paradigmQuiz.answered) return; paradigmQuiz.answered = true; const item = paradigmQuiz.deck[paradigmQuiz.index], feedback = document.getElementById('paradigm-feedback'), select = document.getElementById('paradigm-answer'); select.disabled = true; if (answer === item.answer) { paradigmQuiz.correct++; feedback.className = 'quiz-feedback correct'; feedback.textContent = 'Correct — well done.'; } else { paradigmQuiz.missed.push(item); feedback.className = 'quiz-feedback incorrect'; feedback.innerHTML = `Not quite. Correct answer: <span class="greek-form">${escapeHtml(displayParadigmForm(item.answer))}</span>`; } document.getElementById('paradigm-next').style.display = 'inline-block'; localStorage.setItem('biblicalGreekParadigmLastScore', JSON.stringify({correct:paradigmQuiz.correct, attempted:paradigmQuiz.index + 1})); }
+  function nextParadigmQuestion() { if (!paradigmQuiz.answered) return; paradigmQuiz.index++; paradigmQuiz.answered = false; renderParadigmQuestion(); }
+  function restartParadigmQuiz() { startParadigmQuiz('focused'); }
+  function finishParadigmQuiz() { const q = paradigmQuiz, card = document.getElementById('paradigm-quiz-card'), score = document.getElementById('paradigm-score'); score.textContent = `Final score: ${q.correct} / ${q.deck.length}`; document.getElementById('paradigm-progress-bar').style.width = '100%'; card.innerHTML = `<div class="quiz-meta">Quiz complete</div><div class="quiz-prompt">${q.correct} / ${q.deck.length}</div><p>${q.missed.length ? 'Review the missed forms below, then try again.' : 'Perfect score — excellent work.'}</p><button class="primary-btn" onclick="restartParadigmQuiz()" style="margin-top:16px;">Restart quiz</button>`; const missed = document.getElementById('paradigm-missed'); missed.innerHTML = q.missed.length ? `<h3 style="color:var(--accent-deep); margin-bottom:8px;">Missed questions</h3><ul>${q.missed.map(item => `<li><b>${escapeHtml(item.paradigm)} — ${escapeHtml(item.label)}</b><br><span class="greek-form">${escapeHtml(displayParadigmForm(item.answer))}</span></li>`).join('')}</ul>` : ''; }
+
+  // UTILITY FUNCTIONS
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+
+  window.onload = init;
+</script>
+</body>
+</html>
