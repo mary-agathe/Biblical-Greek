@@ -1015,10 +1015,16 @@
       ['S N','ὁ','ἡ','τό'],['S G','τοῦ','τῆς','τοῦ'],['S D','τῷ','τῇ','τῷ'],['S A','τόν','τήν','τό'],['P N','οἱ','αἱ','τά'],['P G','τῶν','τῶν','τῶν'],['P D','τοῖς','ταῖς','τοῖς'],['P A','τούς','τάς','τά'] ] },
     { id:'personal-pronouns', category:'Articles + Pronouns', title:'Personal Pronouns', note:'1st, 2nd, and 3rd-person pronouns', headers:['Label','1P','2P','3P Masc.','3P Fem.','3P Neut.'], rows:[
       ['S N','ἐγώ','σύ','αὐτός','αὐτή','αὐτό'],['S G','ἐμοῦ, μου','σοῦ, σου','αὐτοῦ','αὐτῆς','αὐτοῦ'],['S D','ἐμοί, μοι','σοί, σοι','αὐτῷ','αὐτῇ','αὐτῷ'],['S A','ἐμέ, με','σέ, σε','αὐτόν','αὐτήν','αὐτό'],['P N','ἡμεῖς','ὑμεῖς','αὐτοί','αὐταί','αὐτά'],['P G','ἡμῶν','ὑμῶν','αὐτῶν','αὐτῶν','αὐτῶν'],['P D','ἡμῖν','ὑμῖν','αὐτοῖς','αὐταῖς','αὐτοῖς'],['P A','ἡμᾶς','ὑμᾶς','αὐτούς','αὐτάς','αὐτά'] ] },
-    { id:'indefinite-pronoun', category:'Articles + Pronouns', title:'Indefinite Pronoun', note:'τίς / τι', headers:['Label','Masc./Fem.','Neut.'], rows:[
+    { id:'indefinite-pronoun', category:'Articles + Pronouns', title:'Indefinite Pronoun', note:'τίς / τι', headers:['Label','Masc.','Neut.'], rows:[
       ['S N','τις','τι'],['S G','τινός','τινός'],['S D','τινί','τινί'],['S A','τινά','τι'],['P N','τινές','τινά'],['P G','τινῶν','τινῶν'],['P D','τισί(ν)','τισί(ν)'],['P A','τινάς','τινά'] ] },
-    { id:'noun-declensions', category:'Noun Declensions', title:'3rd-Declension Noun Endings', note:'Masc./fem. and neuter endings', headers:['Label','Masc./Fem.','Neut.'], rows:[
-      ['S N','ς / none','none'],['S G','ος (ως, ους)','ος (ως, ους)'],['S D','ι','ι'],['S A','α or ν','none'],['P N','ες (εις)','α'],['P G','ων','ων'],['P D','σι(ν)','σι(ν)'],['P A','ας (εις)','α'] ] },
+    { id:'first-declension-normal', category:'Noun Declensions', title:'1st Declension: Normal', note:'Feminine alpha and eta patterns', headers:['Case','Singular','Plural'], rows:[
+      ['Nominative','α / η','αι'],['Genitive','ας / ης','ων'],['Dative','ᾳ / ῃ','αις'],['Accusative','αν / ην','ας'] ] },
+    { id:'first-declension-second-type', category:'Noun Declensions', title:'1st Declension: Second Type', note:'Second-type feminine pattern', headers:['Case','Singular','Plural'], rows:[
+      ['Nominative','ας / ης','αι'],['Genitive','ου / ου','ων'],['Dative','α / η','αις'],['Accusative','αν / ην','ας'] ] },
+    { id:'second-declension-masculine', category:'Noun Declensions', title:'2nd Declension: Masculine', note:'Mostly masculine endings', headers:['Case','Singular','Plural'], rows:[
+      ['Nominative','ος','οι'],['Genitive','ου','ων'],['Dative','ῳ','οις'],['Accusative','ον','ους'] ] },
+    { id:'second-declension-neuter', category:'Noun Declensions', title:'2nd Declension: Neuter', note:'Neuter endings', headers:['Case','Singular','Plural'], rows:[
+      ['Nominative','ον','α'],['Genitive','ου','ων'],['Dative','ῳ','οις'],['Accusative','ον','α'] ] },
     { id:'indicative-present', category:'Verb Indicative Forms', title:'Present & Imperfect Indicative', note:'λύω paradigms', headers:['Person','Present Active','Present Middle/Passive','Imperfect Active','Imperfect Middle/Passive'], rows:[
       ['1S','λύ-ω','λύ-ο-μαι','ἔ-λυ-ο-ν','ἐ-λυ-ό-μην'],['2S','λύ-εις','λύ-ῃ','ἔ-λυ-ε-ς','ἐ-λύ-ου'],['3S','λύ-ει','λύ-ε-ται','ἔ-λυ-ε(ν)','ἐ-λύ-ε-το'],['1P','λύ-ο-μεν','λυ-ό-μεθα','ἐ-λύ-ο-μεν','ἐ-λυ-ό-μεθα'],['2P','λύ-ε-τε','λύ-ε-σθε','ἐ-λύ-ε-τε','ἐ-λύ-ε-σθε'],['3P','λύ-ου-σι(ν)','λύ-ο-νται','ἔ-λυ-ο-ν','ἐ-λύ-ο-ντο'] ] },
     { id:'indicative-future-aorist', category:'Verb Indicative Forms', title:'Future & 1st Aorist Indicative', note:'Active and middle forms', headers:['Person','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle'], rows:[
@@ -1033,8 +1039,8 @@
       ['2S','λύ-ε','λύ-ου','λύ-σον','λύ-σαι','λύ-θη-τι'],['3S','λυ-έ-τω','λυ-έ-σθω','λυ-σά-τω','λυ-σά-σθω','λυ-θή-τω'],['2P','λύ-ε-τε','λύ-ε-σθε','λύ-σα-τε','λύ-σα-σθε','λύ-θη-τε'],['3P','λυ-έ-τω-σαν','λυ-έ-σθω-σαν','λυ-σά-τω-σαν','λυ-σά-σθωσαν','λυ-θή-τω-σαν'] ] },
     { id:'infinitive', category:'Infinitive', title:'Infinitive', note:'All infinitive forms shown', headers:['Form','Greek'], rows:[
       ['Present Active','λύ-ειν'],['Present Middle/Passive','λύ-ε-σθαι'],['Future Active','λύ-σ-ειν'],['Future Middle','λύ-σ-ε-σθαι'],['1st Aorist Active','λύ-σαι'],['1st Aorist Middle','λύ-σα-σθαι'],['Perfect Active','λε-λυ-κέ-ναι'],['Perfect Middle/Passive','λε-λύ-σθαι'],['1st Aorist Passive','λυ-θῆ-ναι'],['Future Passive','λυ-θήσ-ε-σθαι'] ] },
-    { id:'participles', category:'Participles', title:'Participles', note:'Masculine, feminine, and neuter participial forms', headers:['Gender','Present Active','Present Middle/Passive','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle','Perfect Active','Perfect Middle/Passive','1st Aorist Passive'], rows:[
-      ['Masc.','λύ-ων','λυ-ό-μεν-ος','λύ-σ-ων','λυ-σ-ό-μεν-ος','λύ-σας','λυ-σά-μεν-ος','λε-λυ-κώς','λε-λυ-μέν-ος','λυ-θείς'],['Fem.','λύ-ουσα','λυ-ο-μέν-η','λύ-σ-ουσα','λυ-σ-ο-μέν-η','λύ-σασα','λυ-σα-μέν-η','λε-λυ-κυῖα','λε-λυ-μέν-η','λυ-θεῖσα'],['Neut.','λῦ-ον','λυ-ό-μεν-ον','λύ-σ-ον','λυ-σ-ό-μεν-ον','λῦ-σαν','λυ-σά-μεν-ον','λε-λυ-κός','λε-λυ-μέν-ον','λυ-θέν'] ] }
+    { id:'participles', category:'Participles', title:'Participles', note:'Select the participle tenses and voices to review', headers:['Form','Present Active','Present Middle/Passive','Aorist Active','Aorist Middle','Aorist Passive','Perfect Active','Perfect Middle/Passive'], rows:[
+      ['Sg. Nom.','λύων','λυόμενος','λύσας','λυσάμενος','λυθείς','λελυκώς','λελυμένος'],['Sg. Gen.','λύοντος','λυομένου','λύσαντος','λυσαμένου','λυθέντος','λελυκότος','λελυμένου'],['Sg. Dat.','λύοντι','λυομένῳ','λύσαντι','λυσαμένῳ','λυθέντι','λελυκότι','λελυμένῳ'],['Sg. Acc.','λύοντα','λυόμενον','λύσαντα','λυσάμενον','λυθέντα','λελυκότα','λελυμένον'],['Pl. Nom.','λύοντες','λυόμενοι','λύσαντες','λυσάμενοι','λυθέντες','λελυκότες','λελυμένοι'],['Pl. Gen.','λυόντων','λυομένων','λυσάντων','λυσαμένων','λυθέντων','λελυκότων','λελυμένων'],['Pl. Dat.','λύουσιν','λυομένοις','λύσασιν','λυσαμένοις','λυθεῖσιν','λελυκόσιν','λελυμένοις'],['Pl. Acc.','λύοντας','λυομένους','λύσαντας','λυσαμένους','λυθέντας','λελυκότας','λελυμένους'] ] }
   ];
   const indicativeTenseHeaders = ['Present Active','Present Middle/Passive','Imperfect Active','Imperfect Middle/Passive','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle','Perfect Active','Pluperfect Active','Perfect Middle/Passive','1st Aorist Passive','Future Passive'];
   const indicativeSource = paradigmSections.filter(section => section.id.indexOf('indicative-') === 0);
@@ -1413,7 +1419,8 @@
     }
 
     localStorage.setItem('biblicalGreekStarred', JSON.stringify(Array.from(starredIds)));
-    renderTestList();
+    const starButton = document.getElementById(`test-star-${index}`);
+    if (starButton) starButton.classList.toggle('active', starredIds.has(word.id));
   }
 
   // PARADIGM REVIEW FUNCTIONS
