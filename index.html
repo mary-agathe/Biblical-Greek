@@ -349,7 +349,7 @@
       <div class="home-card" onclick="goTo('exam-setup')">
         <div class="home-card-icon">Ξ</div>
         <div class="home-card-label">Exam</div>
-        <div class="home-card-sub">Build a custom Greek vocabulary and parsing exam</div>
+        <div class="home-card-sub">Build a custom Greek exam for fun</div>
       </div>
     </div>
     <div class="api-attribution">Greek verse and morphology source: <a href="https://api.github.com/repos/morphgnt/sblgnt/contents/64-Jn-morphgnt.txt" target="_blank" rel="noopener">MorphGNT SBLGNT data API</a>. Parsing codes are documented in the <a href="https://github.com/morphgnt/sblgnt" target="_blank" rel="noopener">MorphGNT repository</a>.</div>
@@ -360,15 +360,15 @@
     <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span>Custom Greek Exam</span></div><div style="width:70px;"></div></div>
     <div class="content-area">
       <h2 class="screen-title">Build Your Exam</h2>
-      <p class="paradigm-intro">Choose the vocabulary and paradigms to include. Verse questions use the Greek New Testament when available.</p>
+      <p class="paradigm-intro">Practice makes perfect 😎🕶👌😭</p>
       <div class="exam-options">
-        <h3 class="exam-section-heading"><span>Vocabulary areas</span><button type="button" class="exam-select-all" data-exam-select="vocab" onclick="selectAllExamAreas('vocab', this)">Select all</button></h3><div class="exam-check-grid" id="exam-vocab-areas"></div>
-          <h3 class="exam-section-heading"><span>Paradigm areas and tenses</span><button type="button" class="exam-select-all" data-exam-select="paradigm" onclick="selectAllExamAreas('paradigm', this)">Select all</button></h3><div class="exam-check-grid" id="exam-paradigm-areas"></div>
-          <h3 class="exam-section-heading"><span>Parsing Bible verse practice</span><button type="button" class="exam-select-all" data-exam-select="api" onclick="selectAllExamAreas('api', this)">Select all</button></h3><p class="exam-section-note">Choose the kinds of words to identify and parse from a Greek New Testament verse.</p><div class="exam-check-grid" id="exam-api-areas"></div>
+        <h3 class="exam-section-heading"><span>Vocabulary</span><button type="button" class="exam-select-all" data-exam-select="vocab" onclick="selectAllExamAreas('vocab', this)">Select all</button></h3><div class="exam-check-grid" id="exam-vocab-areas"></div>
+          <h3 class="exam-section-heading"><span>Paradigm</span><button type="button" class="exam-select-all" data-exam-select="paradigm" onclick="selectAllExamAreas('paradigm', this)">Select all</button></h3><div class="exam-check-grid" id="exam-paradigm-areas"></div>
+          <h3 class="exam-section-heading"><span>Parsing Bible verse</span><button type="button" class="exam-select-all" data-exam-select="api" onclick="selectAllExamAreas('api', this)">Select all</button></h3><p class="exam-section-note">Choose the kinds of words to identify and parse from a Greek New Testament verse.</p><div class="exam-check-grid" id="exam-api-areas"></div>
           <h3>Bible verse range</h3><div class="exam-range-grid"><label>Book<select id="exam-book" onchange="updateExamChapters()"></select></label><label>Chapter<select id="exam-chapter"></select></label><label class="exam-random-option"><input id="exam-random-verses" type="checkbox" checked> Show verses randomly within this chapter</label></div>
         <h3>Exam settings</h3><div class="exam-select-row"><label>Question count<select id="exam-count"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="all">All available</option></select></label><span></span></div>
       </div>
-      <button class="primary-btn" onclick="startExam()">Generate Exam</button>
+      <button class="primary-btn" onclick="startExam()">Generate Exam!</button>
     </div>
   </div>
 
@@ -381,7 +381,7 @@
   <!-- VOCABULARY REVIEW HOME -->
   <div id="screen-vocab-home" class="screen">
     <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span>Vocabulary Review</span></div><div style="width:70px;"></div></div>
-    <div class="content-area"><h2 class="screen-title">Vocabulary Review</h2><p class="paradigm-intro">Choose how you want to review the existing vocabulary database.</p><div class="home-cards"><div class="home-card" onclick="goTo('chapter')"><div class="home-card-icon">Γ</div><div class="home-card-label">Single Section</div><div class="home-card-sub">Review one chapter or list</div></div><div class="home-card" onclick="goTo('multi')"><div class="home-card-icon">Σ</div><div class="home-card-label">Multi-Section Mix</div><div class="home-card-sub">Combine chapters and lists</div></div><div class="home-card" onclick="openStarredChoice()"><div class="home-card-icon">★</div><div class="home-card-label">Starred Vocab</div><div class="home-card-sub">Review saved words</div></div></div></div>
+    <div class="content-area"><h2 class="screen-title">Vocabulary Review</h2><p class="paradigm-intro">🍞Memory Bread Manual Version💔</p><div class="home-cards"><div class="home-card" onclick="goTo('chapter')"><div class="home-card-icon">Γ</div><div class="home-card-label">Single Section</div><div class="home-card-sub">Review one chapter or list</div></div><div class="home-card" onclick="goTo('multi')"><div class="home-card-icon">Σ</div><div class="home-card-label">Multi-Section Mix</div><div class="home-card-sub">Combine chapters and lists</div></div><div class="home-card" onclick="openStarredChoice()"><div class="home-card-icon">★</div><div class="home-card-label">Starred Vocab</div><div class="home-card-sub">Review saved words</div></div></div></div>
   </div>
 
   <!-- SINGLE SECTION SELECTION SCREEN -->
@@ -527,7 +527,7 @@
     <div class="topbar"><button class="back-btn" onclick="goBack()">← Back</button><div class="topbar-brand"><span>Paradigm Review</span></div><div style="width:70px;"></div></div>
     <div class="content-area">
       <h2 class="screen-title">Greek Paradigms</h2>
-      <p class="paradigm-intro">加油 :D</p>
+      <p class="paradigm-intro"> 🦆🦆🦆</p>
       <div class="family-tabs"><button id="family-verb" onclick="setParadigmFamily('verb')">Verb Forms</button><button id="family-nonverb" onclick="setParadigmFamily('nonverb')">Non-Verb Forms</button></div>
       <div class="paradigm-grid" id="paradigm-section-grid"></div>
       <h3 class="screen-title" style="font-size:22px; margin-top:40px;">Quiz Yourself</h3>
