@@ -244,6 +244,15 @@
   .exam-check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px 12px; }
   .exam-check { display: flex; align-items: center; gap: 8px; padding: 5px; font-size: 14px; cursor: pointer; }
   .exam-check input { accent-color: var(--ink); transform: scale(1.1); }
+  .exam-paradigm-option { border: 1px solid var(--ink); padding: 7px 9px; }
+  .exam-paradigm-option > label { display: flex; align-items: center; gap: 8px; font-weight: bold; cursor: pointer; }
+  .exam-paradigm-option > label input { accent-color: var(--ink); transform: scale(1.1); }
+  .exam-tense-grid { display: flex; flex-wrap: wrap; gap: 5px 10px; margin: 6px 0 0 25px; }
+  .exam-tense-grid label { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 12px; cursor: pointer; }
+  .exam-tense-grid input { accent-color: var(--ink); }
+  .exam-tense-menu { margin: 6px 0 0 25px; }
+  .exam-tense-menu summary { display: inline-block; color: var(--muted); font-size: 12px; cursor: pointer; border-bottom: 1px dotted var(--muted); }
+  .exam-tense-menu[open] summary { color: var(--ink); }
   .exam-select-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .exam-select-row label { font-size: 13px; font-weight: bold; }
   .exam-select-row select { width: 100%; margin-top: 4px; padding: 9px; border: 2px solid var(--ink); background: var(--parchment); font-weight: bold; }
@@ -335,7 +344,7 @@
       <p class="paradigm-intro">Choose the vocabulary and paradigms to include. Verse questions use the Greek New Testament when available.</p>
       <div class="exam-options">
         <h3>Vocabulary areas</h3><div class="exam-check-grid" id="exam-vocab-areas"></div>
-        <h3>Paradigm areas</h3><div class="exam-check-grid" id="exam-paradigm-areas"></div>
+        <h3>Paradigm areas and tenses</h3><div class="exam-check-grid" id="exam-paradigm-areas"></div>
         <h3>Exam settings</h3><div class="exam-select-row"><label>Question count<select id="exam-count"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="all">All available</option></select></label><label>Question types<select id="exam-mode"><option value="mixed">Mixed multiple choice + list answer</option><option value="multiple">Multiple choice only</option><option value="list">List answer only</option></select></label></div>
       </div>
       <button class="primary-btn" onclick="startExam()">Generate Exam</button>
@@ -1564,9 +1573,15 @@
     const vocab = document.getElementById('exam-vocab-areas'), paradigms = document.getElementById('exam-paradigm-areas');
     if (!vocab || !paradigms) return;
     vocab.innerHTML = [...chaptersList, ...listsList].map(section => `<label class="exam-check"><input type="checkbox" value="${section}" class="exam-vocab-check">${section}</label>`).join('');
-    paradigms.innerHTML = paradigmSections.filter(section => !['indicative-present', 'indicative-future-aorist', 'indicative-perfect', 'indicative-passive'].includes(section.id)).map(section => `<label class="exam-check"><input type="checkbox" value="${section.id}" class="exam-paradigm-check">${escapeHtml(section.title)}</label>`).join('');
+    paradigms.innerHTML = paradigmSections.filter(section => !['indicative-present', 'indicative-future-aorist', 'indicative-perfect', 'indicative-passive'].includes(section.id)).map(section => {
+      const choices = section.id === 'infinitive' ? section.rows.map(row => row[0]) : section.headers.slice(1);
+      const tenseControls = choices.length > 1 ? `<details class="exam-tense-menu"><summary>Select tenses/forms</summary><div class="exam-tense-grid">${choices.map(choice => `<label><input type="checkbox" value="${escapeHtml(choice)}" data-section="${section.id}" class="exam-form-check" checked disabled>${escapeHtml(choice)}</label>`).join('')}</div></details>` : '';
+      return `<div class="exam-paradigm-option"><label><input type="checkbox" value="${section.id}" class="exam-paradigm-check" onchange="toggleExamForms('${section.id}', this.checked)">${escapeHtml(section.title)}</label>${tenseControls}</div>`;
+    }).join('');
   }
+  function toggleExamForms(sectionId, enabled) { document.querySelectorAll(`.exam-form-check[data-section="${sectionId}"]`).forEach(input => { input.disabled = !enabled; }); }
   function selectedExamValues(selector) { return Array.from(document.querySelectorAll(selector + ':checked')).map(input => input.value); }
+  function selectedExamForms(sectionId) { return Array.from(document.querySelectorAll(`.exam-form-check[data-section="${sectionId}"]:checked`)).map(input => input.value); }
   function cleanAnswer(value) { return String(value || '').toLowerCase().replace(/[.,;:!?()\[\]{}"']/g, '').replace(/\s+/g, ' ').trim(); }
   function makeExamOptions(answer, pool) { const options = [answer, ...pool.filter(item => item !== answer)]; shuffleArray(options); return options.filter((value, index) => options.indexOf(value) === index).slice(0, 4); }
   async function fetchExamVerse() {
@@ -1586,7 +1601,7 @@
     if (!vocabSections.length && !paradigmSectionsSelected.length) { alert('Select at least one vocabulary or paradigm area.'); return; }
     const mode = document.getElementById('exam-mode').value, questions = [];
     const selectedVocab = vocabData.filter(word => vocabSections.includes(word.section));
-    const selectedItems = paradigmItems.filter(item => paradigmSectionsSelected.includes(item.section));
+    const selectedItems = paradigmItems.filter(item => paradigmSectionsSelected.includes(item.section) && (item.section === 'infinitive' ? selectedExamForms(item.section).includes(item.rowLabel) : selectedExamForms(item.section).includes(item.column)));
     const questionKind = () => mode === 'multiple' || (mode === 'mixed' && Math.random() >= .5) ? 'multiple' : 'list';
     selectedVocab.forEach(word => questions.push({ kind: questionKind(), prompt: `What does ${word.greek} mean?`, answer: word.english, options: makeExamOptions(word.english, selectedVocab.map(item => item.english)) }));
     selectedItems.forEach(item => questions.push({ kind: questionKind(), prompt: `Which form matches ${item.label}?`, answer: item.answer, options: makeExamOptions(item.answer, selectedItems.map(entry => entry.answer)), paradigm: item.paradigm }));
