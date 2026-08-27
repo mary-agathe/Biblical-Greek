@@ -251,6 +251,8 @@
   .exam-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .exam-select-all { background: transparent; border: 1px solid var(--ink); color: var(--ink); padding: 4px 9px; font-size: 12px; font-weight: bold; cursor: pointer; }
   .exam-select-all:hover { background: var(--warm-mid); }
+  .exam-section-count { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: bold; }
+  .exam-section-count select { padding: 4px 6px; border: 1px solid var(--ink); background: var(--parchment); color: var(--ink); font-weight: bold; }
   .exam-range-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; align-items: end; }
   .exam-range-grid label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: bold; color: var(--muted); }
   .exam-range-grid select, .exam-range-grid input { width: 100%; padding: 9px; border: 2px solid var(--ink); background: var(--parchment); color: var(--ink); font-weight: bold; }
@@ -362,11 +364,11 @@
       <h2 class="screen-title">Build Your Exam</h2>
       <p class="paradigm-intro">Practice makes perfect 😎🕶👌😭</p>
       <div class="exam-options">
-        <h3 class="exam-section-heading"><span>Vocabulary</span><button type="button" class="exam-select-all" data-exam-select="vocab" onclick="selectAllExamAreas('vocab', this)">Select all</button></h3><div class="exam-check-grid" id="exam-vocab-areas"></div>
-          <h3 class="exam-section-heading"><span>Paradigm</span><button type="button" class="exam-select-all" data-exam-select="paradigm" onclick="selectAllExamAreas('paradigm', this)">Select all</button></h3><div class="exam-check-grid" id="exam-paradigm-areas"></div>
-          <h3 class="exam-section-heading"><span>Parsing Bible verse</span><button type="button" class="exam-select-all" data-exam-select="api" onclick="selectAllExamAreas('api', this)">Select all</button></h3><p class="exam-section-note">Choose the kinds of words to identify and parse from a Greek New Testament verse.</p><div class="exam-check-grid" id="exam-api-areas"></div>
+        <h3 class="exam-section-heading"><span>Vocabulary</span><span><span class="exam-section-count">Questions <select id="exam-vocab-count" aria-label="Vocabulary question count"></select></span><button type="button" class="exam-select-all" data-exam-select="vocab" onclick="selectAllExamAreas('vocab', this)">Select all</button></span></h3><div class="exam-check-grid" id="exam-vocab-areas"></div>
+          <h3 class="exam-section-heading"><span>Paradigm</span><span><span class="exam-section-count">Questions <select id="exam-paradigm-count" aria-label="Paradigm question count"></select></span><button type="button" class="exam-select-all" data-exam-select="paradigm" onclick="selectAllExamAreas('paradigm', this)">Select all</button></span></h3><div class="exam-check-grid" id="exam-paradigm-areas"></div>
+          <h3 class="exam-section-heading"><span>Parsing Bible verse</span><span><span class="exam-section-count">Questions <select id="exam-api-count" aria-label="Bible verse question count"></select></span><button type="button" class="exam-select-all" data-exam-select="api" onclick="selectAllExamAreas('api', this)">Select all</button></span></h3><p class="exam-section-note">Choose the kinds of words to identify and parse from a Greek New Testament verse.</p><div class="exam-check-grid" id="exam-api-areas"></div>
           <h3>Bible verse range</h3><div class="exam-range-grid"><label>Book<select id="exam-book" onchange="updateExamChapters()"></select></label><label>Chapter<select id="exam-chapter"></select></label><label class="exam-random-option"><input id="exam-random-verses" type="checkbox" checked> Show verses randomly within this chapter</label></div>
-        <h3>Exam settings</h3><div class="exam-select-row"><label>Question count<select id="exam-count"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="all">All available</option></select></label><span></span></div>
+        <h3>Exam settings</h3><p class="exam-section-note">The final exam combines the selected question counts from each section.</p>
       </div>
       <button class="primary-btn" onclick="startExam()">Generate Exam!</button>
     </div>
@@ -1158,6 +1160,7 @@
     renderMultiGrid();
     renderExamAreas();
     renderExamBooks();
+    renderExamCounts();
     const savedParadigmSection = localStorage.getItem('biblicalGreekParadigmSection');
     if (savedParadigmSection && paradigmSections.some(section => section.id === savedParadigmSection)) selectedParadigmSection = savedParadigmSection;
     initParadigmReview();
@@ -1192,7 +1195,7 @@
     if (screenName === 'vocab-home') document.getElementById('screen-vocab-home').classList.add('active');
     if (screenName === 'chapter') document.getElementById('screen-chapter').classList.add('active');
     if (screenName === 'multi') document.getElementById('screen-multi').classList.add('active');
-    if (screenName === 'exam-setup') { renderExamAreas(); document.getElementById('screen-exam-setup').classList.add('active'); }
+    if (screenName === 'exam-setup') { renderExamAreas(); renderExamCounts(); document.getElementById('screen-exam-setup').classList.add('active'); }
     if (screenName === 'exam') document.getElementById('screen-exam').classList.add('active');
     if (screenName === 'paradigm-home') { initParadigmReview(); document.getElementById('screen-paradigm-home').classList.add('active'); }
     if (screenName === 'paradigm-study') document.getElementById('screen-paradigm-study').classList.add('active');
@@ -1610,6 +1613,7 @@
   }
   function renderExamBooks() { const book = document.getElementById('exam-book'); if (!book) return; book.innerHTML = examBibleBooks.map(([id, name]) => `<option value="${id}"${id === '64' ? ' selected' : ''}>${name}</option>`).join(''); updateExamChapters(); }
   function updateExamChapters() { const book = examBibleBooks.find(entry => entry[0] === document.getElementById('exam-book')?.value), chapter = document.getElementById('exam-chapter'); if (!book || !chapter) return; chapter.innerHTML = Array.from({length:book[3]}, (_, index) => `<option value="${index + 1}">Chapter ${index + 1}</option>`).join(''); }
+  function renderExamCounts() { ['exam-vocab-count', 'exam-paradigm-count', 'exam-api-count'].forEach(id => { const select = document.getElementById(id); if (select && !select.options.length) select.innerHTML = Array.from({length:20}, (_, index) => `<option value="${index + 1}"${index === 9 ? ' selected' : ''}>${index + 1}</option>`).join(''); }); }
   function selectAllExamAreas(type, button) {
     const parentSelector = type === 'vocab' ? '.exam-vocab-check' : type === 'paradigm' ? '.exam-paradigm-check' : '.exam-api-check';
     const selecting = !Array.from(document.querySelectorAll(parentSelector)).every(input => input.checked);
@@ -1625,6 +1629,7 @@
   function selectedApiForms(sectionId) { return Array.from(document.querySelectorAll(`.exam-api-form-check[data-api-section="${sectionId}"]:checked`)).map(input => input.value); }
   function cleanAnswer(value) { return String(value || '').toLowerCase().replace(/[.,;:!?()\[\]{}"']/g, '').replace(/\s+/g, ' ').trim(); }
   function makeExamOptions(answer, pool) { const distractors = pool.filter(item => item !== answer); shuffleArray(distractors); return [answer, ...distractors].filter((value, index, options) => options.indexOf(value) === index).slice(0, 4); }
+  function buildExamQuestions(pool, count) { if (!pool.length || !count) return []; const questions = []; const source = [...pool]; shuffleArray(source); for (let index = 0; index < count; index++) questions.push({ ...source[index % source.length] }); return questions; }
   const morphologyChoices = {
     pos: ['verb', 'noun', 'article', 'pronoun', 'adjective', 'adverb', 'preposition', 'conjunction', 'particle'],
     number: ['singular', 'plural'], tense: ['present', 'imperfect', 'future', 'aorist', 'perfect', 'pluperfect'],
@@ -1693,20 +1698,22 @@
     const vocabSections = selectedExamValues('.exam-vocab-check'), paradigmSectionsSelected = selectedExamValues('.exam-paradigm-check'), apiSectionsSelected = selectedExamValues('.exam-api-check');
     if (!vocabSections.length && !paradigmSectionsSelected.length && !apiSectionsSelected.length) { alert('Select at least one vocabulary, paradigm, or Bible verse practice area.'); return; }
     const questions = [];
+    const vocabCount = Number(document.getElementById('exam-vocab-count').value), paradigmCount = Number(document.getElementById('exam-paradigm-count').value), apiCount = Number(document.getElementById('exam-api-count').value);
     const selectedVocab = vocabData.filter(word => vocabSections.includes(word.section));
     const selectedItems = paradigmItems.filter(item => paradigmSectionsSelected.includes(item.section) && (item.section === 'infinitive' ? selectedExamForms(item.section).includes(item.rowLabel) : selectedExamForms(item.section).includes(item.column)));
-    selectedVocab.forEach(word => questions.push({ kind:'multiple', prompt: `What does ${word.greek} mean?`, answer: word.english, options: makeExamOptions(word.english, vocabData.map(item => item.english)) }));
-    selectedItems.forEach(item => questions.push({ kind:'multiple', prompt:`Which form matches ${item.label}?`, answer:item.answer, options:makeExamOptions(item.answer, paradigmItems.map(entry => entry.answer)), paradigm:item.paradigm }));
-    shuffleArray(questions);
+    const vocabularyQuestions = selectedVocab.map(word => ({ kind:'multiple', prompt: `What does ${word.greek} mean?`, answer: word.english, options: makeExamOptions(word.english, vocabData.map(item => item.english)) }));
+    const paradigmQuestions = selectedItems.map(item => ({ kind:'multiple', prompt:`Which form matches ${item.label}?`, answer:item.answer, options:makeExamOptions(item.answer, paradigmItems.map(entry => entry.answer)), paradigm:item.paradigm }));
+    questions.push(...buildExamQuestions(vocabularyQuestions, vocabSections.length ? vocabCount : 0));
+    questions.push(...buildExamQuestions(paradigmQuestions, paradigmSectionsSelected.length ? paradigmCount : 0));
     const verseData = await fetchExamVerses(), verseOrder = [...verseData.verses]; if (document.getElementById('exam-random-verses').checked) shuffleArray(verseOrder);
     const apiTokens = verseOrder.flatMap(verse => verse.tokens.map(token => ({ ...token, verse }))).filter(token => apiSectionsSelected.some(sectionId => tokenMatchesApiArea(token, sectionId) && selectedApiForms(sectionId).some(form => tokenMatchesApiForm(token, form))));
     const groupedApi = {};
     apiTokens.forEach(token => { const area = apiAreaForToken(token, apiSectionsSelected); const key = `${token.verse.reference}|${area?.id || 'other'}`; if (!groupedApi[key]) groupedApi[key] = { verse:token.verse, area, tokens:[] }; if (!groupedApi[key].tokens.some(entry => entry.word === token.word && entry.code === token.code)) groupedApi[key].tokens.push(token); });
-    const apiQuestions = Object.values(groupedApi).slice(0, 8).map(group => ({ kind:'api-parse', prompt:`Identify and parse every ${group.area ? group.area.promptLabel : 'selected word'} in this verse.`, answer:group.tokens.map(token => token.morphology), token:group.tokens[0], tokens:group.tokens, verse:group.verse, wordOptions:group.verse.tokens.map(entry => entry.word).filter((word, index, words) => words.indexOf(word) === index) }));
+    const apiQuestions = Object.values(groupedApi).map(group => ({ kind:'api-parse', prompt:`Identify and parse every ${group.area ? group.area.promptLabel : 'selected word'} in this verse.`, answer:group.tokens.map(token => token.morphology), token:group.tokens[0], tokens:group.tokens, verse:group.verse, wordOptions:group.verse.tokens.map(entry => entry.word).filter((word, index, words) => words.indexOf(word) === index) }));
     if (document.getElementById('exam-random-verses').checked) shuffleArray(apiQuestions);
-    questions.push(...apiQuestions);
-    const requested = document.getElementById('exam-count').value, requestedCount = requested === 'all' ? questions.length : Number(requested), baseQuestions = [...questions]; while (questions.length && questions.length < requestedCount) questions.push({ ...baseQuestions[questions.length % baseQuestions.length] });
-    examState = { deck: questions.slice(0, requested === 'all' ? questions.length : requestedCount), index: 0, correct: 0, answered: false, verse:verseData };
+    questions.push(...buildExamQuestions(apiQuestions, apiSectionsSelected.length ? apiCount : 0));
+    shuffleArray(questions);
+    examState = { deck: questions, index: 0, correct: 0, answered: false, verse:verseData };
     if (!examState.deck.length) { alert('The selected areas do not contain any questions.'); return; }
     goTo('exam'); renderExamQuestion();
   }
