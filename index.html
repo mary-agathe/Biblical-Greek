@@ -186,6 +186,8 @@
   .ctrl-btn:hover { background: var(--warm-mid); transform: translate(1px, 1px); box-shadow: 1px 1px 0px var(--ink); }
   .ctrl-btn.flip { background: var(--ink); color: var(--parchment); }
   .ctrl-btn.flip:hover { background: var(--accent-deep); }
+  .section-nav { display: flex; gap: 10px; width: 100%; max-width: 520px; justify-content: space-between; margin-top: 8px; }
+  .section-nav .ctrl-btn { max-width: 240px; }
 
   .key-hint { margin-top: 18px; font-size: 12px; color: var(--muted); text-align: center; }
   .progress-text { font-size: 15px; font-weight: bold; letter-spacing: 1px;}
@@ -320,6 +322,8 @@
     .card-face { padding: 20px 14px; }
     .fc-controls { gap: 7px; }
     .ctrl-btn { padding: 10px 6px; font-size: 13px; }
+    .section-nav { gap: 7px; }
+    .section-nav .ctrl-btn { font-size: 12px; }
     .key-hint { padding: 0 8px; }
     .exam-select-row { grid-template-columns: 1fr; }
     .exam-range-grid { grid-template-columns: 1fr; }
@@ -453,7 +457,7 @@
   <!-- FLASHCARD SCREEN -->
   <div id="screen-flashcard" class="screen">
     <div class="topbar">
-      <button class="back-btn" onclick="goBack()">← Back</button>
+      <button class="back-btn" onclick="exitVocabularyStudy()">← Back</button>
       <span class="progress-text" id="fc-progress">1 / 20</span>
 
       <!-- SHUFFLE SWITCH -->
@@ -487,6 +491,11 @@
         <button class="ctrl-btn" onclick="nextCard()">Next →</button>
       </div>
 
+      <div class="section-nav" id="fc-section-nav">
+        <button class="ctrl-btn" id="fc-prev-section" onclick="navigateReviewSection(-1)">← Previous chapter</button>
+        <button class="ctrl-btn" id="fc-next-section" onclick="navigateReviewSection(1)">Next chapter →</button>
+      </div>
+
       <div class="key-hint">Shortcuts: <b>Space</b> to flip | <b>← / →</b> for prev/next | <b>S</b> to star</div>
 
     </div>
@@ -495,7 +504,7 @@
   <!-- LIST TEST MODE SCREEN -->
   <div id="screen-test" class="screen">
     <div class="topbar">
-      <button class="back-btn" onclick="goBack()">← Back</button>
+      <button class="back-btn" onclick="exitVocabularyStudy()">← Back</button>
       <span id="test-title-text" style="font-weight: bold; font-family: 'Noto Serif', serif;">Vocabulary Test</span>
       
       <!-- SHUFFLE SWITCH FOR TEST -->
@@ -519,6 +528,11 @@
       <div class="action-group" style="margin-bottom: 40px;">
         <button class="primary-btn" onclick="checkTestAnswers()">Check Answers</button>
         <button class="secondary-btn" onclick="resetTest()">Reset Test</button>
+      </div>
+
+      <div class="section-nav" id="test-section-nav">
+        <button class="ctrl-btn" id="test-prev-section" onclick="navigateReviewSection(-1)">← Previous chapter</button>
+        <button class="ctrl-btn" id="test-next-section" onclick="navigateReviewSection(1)">Next chapter →</button>
       </div>
 
     </div>
@@ -1138,6 +1152,8 @@
   let currentSingleTab = 'ch';
   let isShuffleOn = true;
   let pendingSource = null;
+  let reviewContext = null;
+  let reviewMode = null;
   let testSelections = {};
   let navigationHistory = [];
   let examState = { deck: [], index: 0, correct: 0, answered: false, verse: null };
@@ -1206,6 +1222,14 @@
   function goBack() {
     const previousScreen = navigationHistory.pop();
     goTo(previousScreen || 'home', false);
+  }
+
+  function exitVocabularyStudy() {
+    const returnScreen = reviewContext?.returnScreen || 'vocab-home';
+    if (navigationHistory[navigationHistory.length - 1] === returnScreen) navigationHistory.pop();
+    reviewContext = null;
+    reviewMode = null;
+    goTo(returnScreen, false);
   }
 
   // Single Section Tab Switch
@@ -1293,8 +1317,10 @@
 
     if (pendingSource.type === 'single') {
       rawDeck = vocabData.filter(v => v.section === pendingSource.value);
+      reviewContext = { type: 'single', section: pendingSource.value, returnScreen: 'chapter' };
     } else if (pendingSource.type === 'starred') {
       rawDeck = vocabData.filter(v => starredIds.has(v.id));
+      reviewContext = { type: 'starred', returnScreen: 'vocab-home' };
     }
 
     launchReviewMode(mode);
@@ -1307,10 +1333,12 @@
       return;
     }
     rawDeck = vocabData.filter(v => selected.includes(v.section));
+    reviewContext = { type: 'multi', returnScreen: 'multi' };
     launchReviewMode(mode);
   }
 
   function launchReviewMode(mode) {
+    reviewMode = mode;
     // Sync shuffle UI switches
     document.getElementById('fc-shuffle-toggle').checked = isShuffleOn;
     document.getElementById('test-shuffle-toggle').checked = isShuffleOn;
@@ -1352,6 +1380,7 @@
     currentIndex = 0;
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-flashcard').classList.add('active');
+    updateReviewSectionNav();
     renderCard();
   }
 
@@ -1417,7 +1446,30 @@
     document.getElementById('screen-test').classList.add('active');
     document.getElementById('test-score-banner').style.display = 'none';
     testSelections = {};
+    updateReviewSectionNav();
     renderTestList();
+  }
+
+  function updateReviewSectionNav() {
+    const isSingleSection = reviewContext?.type === 'single';
+    document.querySelectorAll('.section-nav').forEach(nav => { nav.hidden = !isSingleSection; });
+    if (!isSingleSection) return;
+    const sections = reviewContext.section.startsWith('Chapter') ? chaptersList : listsList;
+    const sectionIndex = sections.indexOf(reviewContext.section);
+    ['fc', 'test'].forEach(prefix => {
+      document.getElementById(`${prefix}-prev-section`).disabled = sectionIndex <= 0;
+      document.getElementById(`${prefix}-next-section`).disabled = sectionIndex >= sections.length - 1;
+    });
+  }
+
+  function navigateReviewSection(direction) {
+    if (reviewContext?.type !== 'single') return;
+    const sections = reviewContext.section.startsWith('Chapter') ? chaptersList : listsList;
+    const nextIndex = sections.indexOf(reviewContext.section) + direction;
+    if (nextIndex < 0 || nextIndex >= sections.length) return;
+    reviewContext.section = sections[nextIndex];
+    rawDeck = vocabData.filter(word => word.section === reviewContext.section);
+    launchReviewMode(reviewMode);
   }
 
   function renderTestList() {
