@@ -1628,7 +1628,7 @@
   function selectedExamForms(sectionId) { return Array.from(document.querySelectorAll(`.exam-form-check[data-section="${sectionId}"]:checked`)).map(input => input.value); }
   function selectedApiForms(sectionId) { return Array.from(document.querySelectorAll(`.exam-api-form-check[data-api-section="${sectionId}"]:checked`)).map(input => input.value); }
   function cleanAnswer(value) { return String(value || '').toLowerCase().replace(/[.,;:!?()\[\]{}"']/g, '').replace(/\s+/g, ' ').trim(); }
-  function makeExamOptions(answer, pool) { const distractors = pool.filter(item => item !== answer); shuffleArray(distractors); return [answer, ...distractors].filter((value, index, options) => options.indexOf(value) === index).slice(0, 4); }
+    function makeExamOptions(answer, pool) { const distractors = pool.filter(item => item !== answer); shuffleArray(distractors); var choices = [answer, ...distractors].filter((value, index, options) => options.indexOf(value) === index).slice(0, 4); shuffleArray(choices); return choices; }
   function buildExamQuestions(pool, count) { if (!pool.length || !count) return []; const questions = []; const source = [...pool]; shuffleArray(source); for (let index = 0; index < count; index++) questions.push({ ...source[index % source.length] }); return questions; }
   const morphologyChoices = {
     pos: ['verb', 'noun', 'article', 'pronoun', 'adjective', 'adverb', 'preposition', 'conjunction', 'particle'],
