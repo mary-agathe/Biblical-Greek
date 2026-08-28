@@ -1613,7 +1613,7 @@
   }
   function renderExamBooks() { const book = document.getElementById('exam-book'); if (!book) return; book.innerHTML = examBibleBooks.map(([id, name]) => `<option value="${id}"${id === '64' ? ' selected' : ''}>${name}</option>`).join(''); updateExamChapters(); }
   function updateExamChapters() { const book = examBibleBooks.find(entry => entry[0] === document.getElementById('exam-book')?.value), chapter = document.getElementById('exam-chapter'); if (!book || !chapter) return; chapter.innerHTML = Array.from({length:book[3]}, (_, index) => `<option value="${index + 1}">Chapter ${index + 1}</option>`).join(''); }
-  function renderExamCounts() { ['exam-vocab-count', 'exam-paradigm-count', 'exam-api-count'].forEach(id => { const select = document.getElementById(id); if (select && !select.options.length) select.innerHTML = Array.from({length:20}, (_, index) => `<option value="${index + 1}"${index === 9 ? ' selected' : ''}>${index + 1}</option>`).join(''); }); }
+  function renderExamCounts() { ['exam-vocab-count', 'exam-paradigm-count', 'exam-api-count'].forEach(id => { const select = document.getElementById(id); if (select && !select.options.length) select.innerHTML = Array.from({length:50}, (_, index) => `<option value="${index + 1}"${index === 9 ? ' selected' : ''}>${index + 1}</option>`).join(''); }); }
   function selectAllExamAreas(type, button) {
     const parentSelector = type === 'vocab' ? '.exam-vocab-check' : type === 'paradigm' ? '.exam-paradigm-check' : '.exam-api-check';
     const selecting = !Array.from(document.querySelectorAll(parentSelector)).every(input => input.checked);
