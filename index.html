@@ -209,6 +209,27 @@
   .test-star-btn.active { color:#ffa44c; }
   .test-star-btn:hover { transform: scale(1.1); }
 
+  /* BIBLE VERSE MODE */
+  .verse-review-layout { width: 100%; max-width: 980px; display: grid; grid-template-columns: minmax(220px, 260px) minmax(0, 1fr); gap: 20px; align-items: flex-start; }
+  .verse-word-picker { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); border-radius: 0px; padding: 16px; max-height: 70vh; overflow-y: auto; }
+  .verse-word-list { display: flex; flex-direction: column; gap: 10px; }
+  .verse-word-option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 8px; border: 2px solid transparent; cursor: pointer; transition: 0.1s; }
+  .verse-word-option:hover { background: var(--warm-mid); }
+  .verse-word-option.selected { border-color: var(--ink); background: var(--warm-mid); }
+  .verse-word-option input { margin-top: 4px; accent-color: var(--ink); }
+  .verse-word-option strong { display: block; font-size: 18px; color: var(--ink); }
+  .verse-word-option span { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .verse-card-list { display: flex; flex-direction: column; gap: 16px; }
+  .verse-card { background: var(--parchment); border: 2px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); border-radius: 0px; padding: 20px 22px; position: relative; }
+  .verse-card-empty { opacity: 0.7; }
+  .verse-word-name { font-size: 24px; font-weight: bold; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.5px; }
+  .verse-translation { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
+  .verse-text { background: var(--warm-mid); border-left: 4px solid var(--ink); padding: 14px 16px; font-size: 19px; line-height: 1.6; color: var(--ink); word-spacing: 0.1em; }
+  .verse-text mark { background: #ffd700; padding: 2px 4px; font-weight: bold; }
+  .verse-reference { margin-top: 12px; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.3px; }
+  .verse-loading { background: var(--parchment); border: 2px dashed var(--ink); padding: 28px 18px; color: var(--muted); font-weight: bold; text-align: center; }
+  .verse-empty { background: var(--parchment); border: 2px dashed var(--ink); padding: 28px 18px; color: var(--muted); font-weight: bold; text-align: center; }
+
   /* MODE SELECTION MODAL */
   .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 44, 44, 0.8); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
   .modal-overlay.active { display: flex; }
@@ -458,6 +479,7 @@
   <div id="screen-flashcard" class="screen">
     <div class="topbar">
       <button class="back-btn" onclick="exitVocabularyStudy()">← Back</button>
+      <div class="topbar-brand" id="fc-title-text" style="font-size: 14px;">Vocabulary Review</div>
       <span class="progress-text" id="fc-progress">1 / 20</span>
 
       <!-- SHUFFLE SWITCH -->
@@ -471,6 +493,7 @@
     </div>
     
     <div class="content-area" style="justify-content: center; margin-top: 50px;">
+      <h2 class="screen-title" id="flashcard-header-title">Vocabulary Review</h2>
       
       <div class="flashcard-container">
         <button class="star-btn" id="fc-star" onclick="toggleStar(event)" title="Star this word">★</button>
@@ -518,6 +541,7 @@
     </div>
 
     <div class="content-area" style="margin-top: 65px;">
+      <h2 class="screen-title" id="test-header-title">Vocabulary Test</h2>
       
       <div class="test-score-banner" id="test-score-banner"></div>
 
@@ -574,6 +598,25 @@
     <div class="content-area"><p class="paradigm-intro">Fill each selected cell with the correct Greek form, then check the chart.</p><div class="chart-wrap" id="fill-chart"></div><div class="quiz-feedback" id="fill-feedback"></div><div class="action-group"><button class="primary-btn" onclick="checkFillChart()">Check chart</button></div></div>
   </div>
 
+  <!-- BIBLE VERSE REVIEW SCREEN -->
+  <div id="screen-verse" class="screen">
+    <div class="topbar">
+      <button class="back-btn" onclick="exitVocabularyStudy()">← Back</button>
+      <div class="topbar-brand"><span id="verse-title-text">Bible Verse Review</span></div>
+      <div style="width:70px;"></div>
+    </div>
+    <div class="content-area">
+      <h2 class="screen-title" id="verse-header-title">Bible Verse Review</h2>
+      <div class="verse-review-layout">
+        <div class="verse-word-picker">
+          <div class="group-title" style="margin-top: 0;">Select vocabulary</div>
+          <div class="verse-word-list" id="verse-word-picker"></div>
+        </div>
+        <div class="verse-card-list" id="verse-card-list"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODE SELECTION MODAL -->
   <div class="modal-overlay" id="mode-modal">
     <div class="modal-card">
@@ -582,6 +625,7 @@
       <div class="modal-buttons">
         <button class="primary-btn" onclick="confirmModeSelection('flashcards')">🎴 Flashcard Mode</button>
         <button class="secondary-btn" onclick="confirmModeSelection('test')">📝 List Test Mode</button>
+        <button class="secondary-btn" onclick="confirmModeSelection('verse')">📖 Bible Verse</button>
         <button class="sec-action-btn" onclick="closeModeModal()" style="margin-top: 8px;">Cancel</button>
       </div>
     </div>
@@ -1135,8 +1179,12 @@
       ['2S','λύ-ε','λύ-ου','λύ-σον','λύ-σαι','λύ-θη-τι'],['3S','λυ-έ-τω','λυ-έ-σθω','λυ-σά-τω','λυ-σά-σθω','λυ-θή-τω'],['2P','λύ-ε-τε','λύ-ε-σθε','λύ-σα-τε','λύ-σα-σθε','λύ-θη-τε'],['3P','λυ-έ-τω-σαν','λυ-έ-σθω-σαν','λυ-σά-τω-σαν','λυ-σά-σθωσαν','λυ-θή-τω-σαν'] ] },
     { id:'infinitive', category:'Infinitive', title:'Infinitive', note:'All infinitive forms shown', headers:['Form','Greek'], rows:[
       ['Present Active','λύ-ειν'],['Present Middle/Passive','λύ-ε-σθαι'],['Future Active','λύ-σ-ειν'],['Future Middle','λύ-σ-ε-σθαι'],['1st Aorist Active','λύ-σαι'],['1st Aorist Middle','λύ-σα-σθαι'],['Perfect Active','λε-λυ-κέ-ναι'],['Perfect Middle/Passive','λε-λύ-σθαι'],['1st Aorist Passive','λυ-θῆ-ναι'],['Future Passive','λυ-θήσ-ε-σθαι'] ] },
-    { id:'participles', category:'Participles', title:'Participles', note:'Select the participle tenses and voices to review', headers:['Form','Present Active','Present Middle/Passive','Aorist Active','Aorist Middle','Aorist Passive','Perfect Active','Perfect Middle/Passive'], rows:[
-      ['Sg. Nom.','λύων','λυόμενος','λύσας','λυσάμενος','λυθείς','λελυκώς','λελυμένος'],['Sg. Gen.','λύοντος','λυομένου','λύσαντος','λυσαμένου','λυθέντος','λελυκότος','λελυμένου'],['Sg. Dat.','λύοντι','λυομένῳ','λύσαντι','λυσαμένῳ','λυθέντι','λελυκότι','λελυμένῳ'],['Sg. Acc.','λύοντα','λυόμενον','λύσαντα','λυσάμενον','λυθέντα','λελυκότα','λελυμένον'],['Pl. Nom.','λύοντες','λυόμενοι','λύσαντες','λυσάμενοι','λυθέντες','λελυκότες','λελυμένοι'],['Pl. Gen.','λυόντων','λυομένων','λυσάντων','λυσαμένων','λυθέντων','λελυκότων','λελυμένων'],['Pl. Dat.','λύουσιν','λυομένοις','λύσασιν','λυσαμένοις','λυθεῖσιν','λελυκόσιν','λελυμένοις'],['Pl. Acc.','λύοντας','λυομένους','λύσαντας','λυσαμένους','λυθέντας','λελυκότας','λελυμένους'] ] }
+    { id:'participles-masculine', category:'Participles', title:'Participles — Masculine', note:'Masculine participle forms', headers:['Form','Present Active','Present Middle/Passive','Aorist Active','Aorist Middle','Aorist Passive','Perfect Active','Perfect Middle/Passive'], rows:[
+      ['Sg. Nom.','λύων','λυόμενος','λύσας','λυσάμενος','λυθείς','λελυκώς','λελυμένος'],['Sg. Gen.','λύοντος','λυομένου','λύσαντος','λυσαμένου','λυθέντος','λελυκότος','λελυμένου'],['Sg. Dat.','λύοντι','λυομένῳ','λύσαντι','λυσαμένῳ','λυθέντι','λελυκότι','λελυμένῳ'],['Sg. Acc.','λύοντα','λυόμενον','λύσαντα','λυσάμενον','λυθέντα','λελυκότα','λελυμένον'],['Pl. Nom.','λύοντες','λυόμενοι','λύσαντες','λυσάμενοι','λυθέντες','λελυκότες','λελυμένοι'],['Pl. Gen.','λυόντων','λυομένων','λυσάντων','λυσαμένων','λυθέντων','λελυκότων','λελυμένων'],['Pl. Dat.','λύουσιν','λυομένοις','λύσασιν','λυσαμένοις','λυθεῖσιν','λελυκόσιν','λελυμένοις'],['Pl. Acc.','λύοντας','λυομένους','λύσαντας','λυσαμένους','λυθέντας','λελυκότας','λελυμένους'] ] },
+    { id:'participles-feminine', category:'Participles', title:'Participles — Feminine', note:'Feminine participle forms', headers:['Form','Present Active','Present Middle/Passive','Aorist Active','Aorist Middle','Aorist Passive','Perfect Active','Perfect Middle/Passive'], rows:[
+      ['Sg. Nom.','λύουσα','λυομένη','λύσασα','λυσαμένη','λυθεῖσα','λελυκυῖα','λελυμένη'],['Sg. Gen.','λυούσης','λυομένης','λυσάσης','λυσαμένης','λυθείσης','λελυκυίας','λελυμένης'],['Sg. Dat.','λυούσῃ','λυομένῃ','λυσάσῃ','λυσαμένῃ','λυθείσῃ','λελυκυίᾳ','λελυμένῃ'],['Sg. Acc.','λύουσαν','λυομένην','λύσασαν','λυσαμένην','λυθεῖσαν','λελυκυῖαν','λελυμένην'],['Pl. Nom.','λύουσαι','λυόμεναι','λύσασαι','λυσάμεναι','λυθεῖσαι','λελυκυῖαι','λελυμέναι'],['Pl. Gen.','λυουσῶν','λυομένων','λυσάσων','λυσαμένων','λυθεισῶν','λελυκυιῶν','λελυμένων'],['Pl. Dat.','λυούσαις','λυομέναις','λυσάσαις','λυσαμέναις','λυθείσαις','λελυκυίαις','λελυμέναις'],['Pl. Acc.','λύουσας','λυομένας','λύσασας','λυσαμένας','λυθείσας','λελυκυίας','λελυμένας'] ] },
+    { id:'participles-neuter', category:'Participles', title:'Participles — Neuter', note:'Neuter participle forms', headers:['Form','Present Active','Present Middle/Passive','Aorist Active','Aorist Middle','Aorist Passive','Perfect Active','Perfect Middle/Passive'], rows:[
+      ['Sg. Nom.','λῦον','λυόμενον','λῦσαν','λυσάμενον','λυθέν','λελυκός','λελυμένον'],['Sg. Gen.','λύοντος','λυομένου','λύσαντος','λυσαμένου','λυθέντος','λελυκότος','λελυμένου'],['Sg. Dat.','λύοντι','λυομένῳ','λύσαντι','λυσαμένῳ','λυθέντι','λελυκότι','λελυμένῳ'],['Sg. Acc.','λῦον','λυόμενον','λῦσαν','λυσάμενον','λυθέν','λελυκός','λελυμένον'],['Pl. Nom.','λύοντα','λυόμενα','λύσαντα','λυσάμενα','λυθέντα','λελυκότα','λελυμένα'],['Pl. Gen.','λυόντων','λυομένων','λυσάντων','λυσαμένων','λυθέντων','λελυκότων','λελυμένων'],['Pl. Dat.','λύουσιν','λυομένοις','λύσασιν','λυσαμένοις','λυθεῖσιν','λελυκόσιν','λελυμένοις'],['Pl. Acc.','λύοντα','λυόμενα','λύσαντα','λυσάμενα','λυθέντα','λελυκότα','λελυμένα'] ] }
   ];
   const indicativeTenseHeaders = ['Present Active','Present Middle/Passive','Imperfect Active','Imperfect Middle/Passive','Future Active','Future Middle','1st Aorist Active','1st Aorist Middle','Perfect Active','Pluperfect Active','Perfect Middle/Passive','1st Aorist Passive','Future Passive'];
   const indicativeSource = paradigmSections.filter(section => section.id.indexOf('indicative-') === 0);
@@ -1156,6 +1204,7 @@
   let reviewMode = null;
   let testSelections = {};
   let navigationHistory = [];
+  let selectedVerseWords = new Set();
   let examState = { deck: [], index: 0, correct: 0, answered: false, verse: null };
 
   // Sections definitions
@@ -1349,6 +1398,8 @@
       beginFlashcards();
     } else if (mode === 'test') {
       beginListTest();
+    } else if (mode === 'verse') {
+      beginVerseReview();
     }
   }
 
@@ -1357,6 +1408,19 @@
     if (isShuffleOn) {
       shuffleArray(currentDeck);
     }
+  }
+
+  function getSectionHeaderTitle() {
+    if (reviewContext?.type === 'single' && reviewContext.section) {
+      return reviewContext.section;
+    }
+
+    if (currentDeck.length) {
+      const sections = [...new Set(currentDeck.map(word => word.section))];
+      return sections.length === 1 ? sections[0] : sections.join(' • ');
+    }
+
+    return 'Vocabulary Review';
   }
 
   // SHUFFLE TOGGLE CONTROLS
@@ -1380,6 +1444,8 @@
     currentIndex = 0;
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-flashcard').classList.add('active');
+    document.getElementById('fc-title-text').textContent = getSectionHeaderTitle();
+    document.getElementById('flashcard-header-title').textContent = getSectionHeaderTitle();
     updateReviewSectionNav();
     renderCard();
   }
@@ -1387,6 +1453,10 @@
   function renderCard() {
     const fcElem = document.getElementById('fc-element');
     fcElem.classList.remove('flipped');
+    const titleEl = document.getElementById('fc-title-text');
+    const mainTitle = document.getElementById('flashcard-header-title');
+    if (titleEl) titleEl.textContent = getSectionHeaderTitle();
+    if (mainTitle) mainTitle.textContent = getSectionHeaderTitle();
     
     setTimeout(() => {
       const word = currentDeck[currentIndex];
@@ -1444,10 +1514,197 @@
   function beginListTest() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-test').classList.add('active');
+    document.getElementById('test-title-text').textContent = getSectionHeaderTitle();
+    document.getElementById('test-header-title').textContent = getSectionHeaderTitle();
     document.getElementById('test-score-banner').style.display = 'none';
     testSelections = {};
     updateReviewSectionNav();
     renderTestList();
+  }
+
+  function buildVerseSearchKeys(greekText) {
+    const raw = String(greekText || '').replace(/\s*\([^)]*\)/g, '').trim();
+    const firstCut = raw.split(',')[0].trim();
+    const lookup = firstCut.split(/\s+/).filter(Boolean).map(token => token.replace(/[\[\](){}.,;:!?«»]/g, '').trim()).filter(Boolean);
+    return lookup.length ? lookup : [raw.replace(/[\[\](){}.,;:!?«»]/g, '').trim()].filter(Boolean);
+  }
+
+  function normalizeGreekText(value) {
+    return String(value || '').toLowerCase().replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  const verseBookCache = {};
+
+  async function fetchBookData(bookCode) {
+    if (verseBookCache[bookCode]) return verseBookCache[bookCode];
+    try {
+      const response = await fetch(`https://raw.githubusercontent.com/morphgnt/sblgnt/master/${bookCode}-morphgnt.txt`);
+      if (!response.ok) return null;
+      const text = await response.text();
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      verseBookCache[bookCode] = lines;
+      return lines;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async function findVerseMatchForWord(word) {
+    const searchKeys = buildVerseSearchKeys(word.greek);
+    const normalizedKeys = searchKeys.map(normalizeGreekText);
+    if (!normalizedKeys.length) return null;
+    const primaryKey = normalizedKeys[0];
+
+    for (const book of examBibleBooks) {
+      const bookCode = `${book[0]}-${book[2]}`;
+      const lines = await fetchBookData(bookCode);
+      if (!lines) continue;
+
+      for (let i = 0; i < lines.length; i++) {
+        const columns = lines[i].trim().split(/\s+/);
+        if (columns.length < 7) continue;
+        const surface = columns[3] || '';
+        const wordText = surface.replace(/^[([{]+|[.,;:!?·⸃)\]}]+$/g, '').trim();
+        if (!wordText) continue;
+        const normalized = normalizeGreekText(wordText);
+        if (normalized === primaryKey || normalizedKeys.includes(normalized)) {
+          const reference = columns[0] || '';
+          const bookName = book[1];
+          const chapter = parseInt(reference.slice(2, 4), 10);
+          const verseNum = reference.slice(4, 6);
+          const fullReference = `${bookName} ${chapter}:${verseNum}`;
+          const verseLines = lines.filter(entry => {
+            const ref = entry.trim().split(/\s+/)[0] || '';
+            return ref.startsWith(reference.slice(0, 4)) && ref.slice(4, 6) === verseNum;
+          });
+          if (!verseLines.length) continue;
+          const verseWords = verseLines.map(line => {
+            const cols = line.trim().split(/\s+/);
+            return cols[3] || '';
+          }).filter(Boolean);
+          const verseText = verseWords.map((w, idx) => {
+            const wText = w.replace(/^[([{]+|[.,;:!?·⸃)\]}]+$/g, '').trim();
+            return normalizeGreekText(wText) === primaryKey ? `**${w}**` : w;
+          }).join(' ');
+          if (verseText) {
+            return {
+              word,
+              reference: fullReference,
+              text: verseText,
+              highlightedWord: wordText,
+            };
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  async function fetchVerseCardsForSelectedWords() {
+    const selectedWords = currentDeck.filter(word => selectedVerseWords.has(word.id));
+    const results = [];
+
+    for (const word of selectedWords) {
+      const match = await findVerseMatchForWord(word);
+      results.push(match || {
+        word,
+        reference: 'No matching verse found',
+        text: 'No matching verse was found in the available Greek New Testament data for this vocabulary word.',
+      });
+    }
+
+    return results;
+  }
+
+  function renderVerseWordPicker() {
+    const container = document.getElementById('verse-word-picker');
+    container.innerHTML = '';
+    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.cssText = 'display: flex; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--ink);';
+    const selectAllBtn = document.createElement('button');
+    selectAllBtn.textContent = 'Select All';
+    selectAllBtn.style.cssText = 'flex: 1; padding: 8px 12px; background: var(--ink); color: var(--parchment); border: none; cursor: pointer; font-weight: bold; border-radius: 2px; font-size: 13px;';
+    selectAllBtn.addEventListener('click', () => {
+      currentDeck.forEach(w => selectedVerseWords.add(w.id));
+      renderVerseWordPicker();
+      renderVerseCards();
+    });
+    const clearAllBtn = document.createElement('button');
+    clearAllBtn.textContent = 'Clear All';
+    clearAllBtn.style.cssText = 'flex: 1; padding: 8px 12px; background: var(--parchment); color: var(--ink); border: 2px solid var(--ink); cursor: pointer; font-weight: bold; border-radius: 2px; font-size: 13px;';
+    clearAllBtn.addEventListener('click', () => {
+      selectedVerseWords.clear();
+      renderVerseWordPicker();
+      renderVerseCards();
+    });
+    buttonContainer.appendChild(selectAllBtn);
+    buttonContainer.appendChild(clearAllBtn);
+    container.appendChild(buttonContainer);
+
+    currentDeck.forEach(word => {
+      const checked = selectedVerseWords.has(word.id);
+      const label = document.createElement('label');
+      label.className = 'verse-word-option' + (checked ? ' selected' : '');
+      label.innerHTML = `
+        <input type="checkbox" value="${word.id}" ${checked ? 'checked' : ''}>
+        <div>
+          <strong>${escapeHtml(word.greek)}</strong>
+          <span>${escapeHtml(word.english)}</span>
+        </div>
+      `;
+      label.querySelector('input').addEventListener('change', (event) => {
+        if (event.target.checked) {
+          selectedVerseWords.add(word.id);
+        } else {
+          selectedVerseWords.delete(word.id);
+        }
+        renderVerseCards();
+      });
+      container.appendChild(label);
+    });
+  }
+
+  function renderVerseCards() {
+    const list = document.getElementById('verse-card-list');
+    const selectedWords = currentDeck.filter(word => selectedVerseWords.has(word.id));
+
+    if (!selectedWords.length) {
+      list.innerHTML = '<div class="verse-empty">Select at least one vocabulary word to view its matching Bible verse.</div>';
+      return;
+    }
+
+    list.innerHTML = '<div class="verse-loading">Loading verses…</div>';
+    fetchVerseCardsForSelectedWords().then(results => {
+      list.innerHTML = results.map(item => {
+        const hasMatch = item.text && !item.text.includes('No matching verse found');
+        const verseHtml = hasMatch
+          ? item.text.split(/\*\*(.*?)\*\*/).map((part, idx) => idx % 2 === 1 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)).join('')
+          : escapeHtml(item.text);
+        return `
+          <div class="verse-card ${hasMatch ? '' : 'verse-card-empty'}">
+            <div class="verse-word-name">${escapeHtml(item.word.greek)}</div>
+            <div class="verse-translation">${escapeHtml(item.word.english)}</div>
+            <div class="verse-text">${verseHtml}</div>
+            <div class="verse-reference">${escapeHtml(item.reference)}</div>
+          </div>
+        `;
+      }).join('');
+    }).catch(error => {
+      console.error('Error loading verses:', error);
+      list.innerHTML = '<div class="verse-empty">Error loading verses. Please try again.</div>';
+    });
+  }
+
+  function beginVerseReview() {
+    selectedVerseWords = new Set(currentDeck.map(word => word.id));
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-verse').classList.add('active');
+    document.getElementById('verse-title-text').textContent = getSectionHeaderTitle();
+    document.getElementById('verse-header-title').textContent = getSectionHeaderTitle();
+    renderVerseWordPicker();
+    renderVerseCards();
   }
 
   function updateReviewSectionNav() {
