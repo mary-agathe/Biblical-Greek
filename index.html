@@ -224,6 +224,7 @@
   .verse-card-empty { opacity: 0.7; }
   .verse-word-name { font-size: 24px; font-weight: bold; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.5px; }
   .verse-translation { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
+  .verse-related-form { font-size: 12px; color: #d97706; font-weight: 600; margin-bottom: 10px; padding: 6px 8px; background: rgba(217, 119, 6, 0.1); border-left: 3px solid #d97706; }
   .verse-text { background: var(--warm-mid); border-left: 4px solid var(--ink); padding: 14px 16px; font-size: 19px; line-height: 1.6; color: var(--ink); word-spacing: 0.1em; }
   .verse-text mark { background: #ffd700; padding: 2px 4px; font-weight: bold; }
   .verse-reference { margin-top: 12px; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.3px; }
@@ -1555,6 +1556,7 @@
     if (!normalizedKeys.length) return null;
     const primaryKey = normalizedKeys[0];
 
+    // Try exact match first
     for (const book of examBibleBooks) {
       const bookCode = `${book[0]}-${book[2]}`;
       const lines = await fetchBookData(bookCode);
@@ -1592,6 +1594,57 @@
               reference: fullReference,
               text: verseText,
               highlightedWord: wordText,
+              isExactMatch: true,
+            };
+          }
+        }
+      }
+    }
+
+    // If no exact match found, search for related forms using stem matching
+    const stemKey = primaryKey.substring(0, Math.max(3, Math.floor(primaryKey.length * 0.7)));
+    
+    for (const book of examBibleBooks) {
+      const bookCode = `${book[0]}-${book[2]}`;
+      const lines = await fetchBookData(bookCode);
+      if (!lines) continue;
+
+      for (let i = 0; i < lines.length; i++) {
+        const columns = lines[i].trim().split(/\s+/);
+        if (columns.length < 7) continue;
+        const surface = columns[3] || '';
+        const wordText = surface.replace(/^[([{]+|[.,;:!?·⸃)\]}]+$/g, '').trim();
+        if (!wordText) continue;
+        const normalized = normalizeGreekText(wordText);
+        
+        // Check if the word starts with the same stem
+        if (normalized.startsWith(stemKey) && normalized.length >= stemKey.length + 1) {
+          const reference = columns[0] || '';
+          const bookName = book[1];
+          const chapter = parseInt(reference.slice(2, 4), 10);
+          const verseNum = reference.slice(4, 6);
+          const fullReference = `${bookName} ${chapter}:${verseNum}`;
+          const verseLines = lines.filter(entry => {
+            const ref = entry.trim().split(/\s+/)[0] || '';
+            return ref.startsWith(reference.slice(0, 4)) && ref.slice(4, 6) === verseNum;
+          });
+          if (!verseLines.length) continue;
+          const verseWords = verseLines.map(line => {
+            const cols = line.trim().split(/\s+/);
+            return cols[3] || '';
+          }).filter(Boolean);
+          const verseText = verseWords.map((w, idx) => {
+            const wText = w.replace(/^[([{]+|[.,;:!?·⸃)\]}]+$/g, '').trim();
+            return normalizeGreekText(wText) === normalized ? `**${w}**` : w;
+          }).join(' ');
+          if (verseText) {
+            return {
+              word,
+              reference: fullReference,
+              text: verseText,
+              highlightedWord: wordText,
+              isExactMatch: false,
+              relatedForm: wordText,
             };
           }
         }
@@ -1682,10 +1735,12 @@
         const verseHtml = hasMatch
           ? item.text.split(/\*\*(.*?)\*\*/).map((part, idx) => idx % 2 === 1 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)).join('')
           : escapeHtml(item.text);
+        const relatedFormNote = item.relatedForm ? `<div class="verse-related-form">Related form: ${escapeHtml(item.relatedForm)}</div>` : '';
         return `
           <div class="verse-card ${hasMatch ? '' : 'verse-card-empty'}">
             <div class="verse-word-name">${escapeHtml(item.word.greek)}</div>
             <div class="verse-translation">${escapeHtml(item.word.english)}</div>
+            ${relatedFormNote}
             <div class="verse-text">${verseHtml}</div>
             <div class="verse-reference">${escapeHtml(item.reference)}</div>
           </div>
