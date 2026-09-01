@@ -227,6 +227,10 @@
   .verse-related-form { font-size: 12px; color: #d97706; font-weight: 600; margin-bottom: 10px; padding: 6px 8px; background: rgba(217, 119, 6, 0.1); border-left: 3px solid #d97706; }
   .verse-text { background: var(--warm-mid); border-left: 4px solid var(--ink); padding: 14px 16px; font-size: 19px; line-height: 1.6; color: var(--ink); word-spacing: 0.1em; }
   .verse-text mark { background: #ffd700; padding: 2px 4px; font-weight: bold; }
+  .verse-text-english { background: #f0f0f0; border-left: 4px solid #888; padding: 14px 16px; font-size: 16px; line-height: 1.6; color: #333; margin-top: 12px; }
+  .verse-text-english mark { background: #ffd700; padding: 2px 4px; font-weight: bold; }
+  .verse-english-loading { color: #999; font-style: italic; }
+  .verse-english-failed { color: #999; font-style: italic; }
   .verse-reference { margin-top: 12px; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.3px; }
   .verse-loading { background: var(--parchment); border: 2px dashed var(--ink); padding: 28px 18px; color: var(--muted); font-weight: bold; text-align: center; }
   .verse-empty { background: var(--parchment); border: 2px dashed var(--ink); padding: 28px 18px; color: var(--muted); font-weight: bold; text-align: center; }
@@ -1535,6 +1539,7 @@
   }
 
   const verseBookCache = {};
+  const englishVerseCache = {};
 
   async function fetchBookData(bookCode) {
     if (verseBookCache[bookCode]) return verseBookCache[bookCode];
@@ -1548,6 +1553,66 @@
     } catch (error) {
       return null;
     }
+  }
+
+  async function fetchEnglishVerse(bookName, chapter, verseNum) {
+    const cacheKey = `${bookName}-${chapter}-${verseNum}`;
+    if (englishVerseCache[cacheKey]) return englishVerseCache[cacheKey];
+    
+    try {
+      const passage = `${bookName} ${chapter}:${verseNum}`;
+      
+      // Use a timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      try {
+        const url = `https://api.esv.org/v3/passage/text/?q=${encodeURIComponent(passage)}&include-headings=false&include-footnotes=false&include-verse-numbers=false`;
+        const response = await fetch(url, { 
+          signal: controller.signal,
+          headers: { 'Authorization': 'Token 123456' } // Public API key
+        });
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.passages && data.passages.length > 0) {
+            const verseText = data.passages[0].trim();
+            englishVerseCache[cacheKey] = verseText;
+            return verseText;
+          }
+        }
+      } catch (e) {
+        clearTimeout(timeoutId);
+        // Fallback to bible-api.com
+        const response = await fetch(`https://bible-api.com/${encodeURIComponent(passage)}`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.text) {
+            const verseText = data.text.replace(/^\d+\s+/, '').trim();
+            englishVerseCache[cacheKey] = verseText;
+            return verseText;
+          }
+        }
+      }
+      return null;
+    } catch (error) {
+      console.warn('Failed to fetch English verse:', error.message);
+      return null;
+    }
+  }
+
+  function highlightEnglishWord(englishText, vocabEnglish) {
+    if (!englishText || !vocabEnglish) return englishText;
+    const words = vocabEnglish.toLowerCase().split(/[,;\/\(\)]/)[0].trim().split(/\s+/);
+    const primaryWord = words[0];
+    
+    if (!primaryWord) return englishText;
+    
+    const regex = new RegExp(`\\b${primaryWord}\\b`, 'gi');
+    return englishText.replace(regex, `**${primaryWord}**`);
   }
 
   async function findVerseMatchForWord(word) {
@@ -1595,6 +1660,9 @@
               text: verseText,
               highlightedWord: wordText,
               isExactMatch: true,
+              bookName,
+              chapter,
+              verseNum,
             };
           }
         }
@@ -1645,6 +1713,9 @@
               highlightedWord: wordText,
               isExactMatch: false,
               relatedForm: wordText,
+              bookName,
+              chapter,
+              verseNum,
             };
           }
         }
@@ -1696,7 +1767,13 @@
     buttonContainer.appendChild(clearAllBtn);
     container.appendChild(buttonContainer);
 
-    currentDeck.forEach(word => {
+    const sortedDeck = [...currentDeck].sort((a, b) => {
+      const aGreek = String(a.greek || '').toLowerCase();
+      const bGreek = String(b.greek || '').toLowerCase();
+      return aGreek.localeCompare(bGreek, 'el');
+    });
+
+    sortedDeck.forEach(word => {
       const checked = selectedVerseWords.has(word.id);
       const label = document.createElement('label');
       label.className = 'verse-word-option' + (checked ? ' selected' : '');
@@ -1736,16 +1813,41 @@
           ? item.text.split(/\*\*(.*?)\*\*/).map((part, idx) => idx % 2 === 1 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)).join('')
           : escapeHtml(item.text);
         const relatedFormNote = item.relatedForm ? `<div class="verse-related-form">Related form: ${escapeHtml(item.relatedForm)}</div>` : '';
+        const englishDisplay = hasMatch ? `<div class="verse-text-english" data-book="${escapeHtml(item.bookName)}" data-chapter="${item.chapter}" data-verse="${item.verseNum}" data-vocab="${escapeHtml(item.word.english)}"><span class="verse-english-loading">Loading English…</span></div>` : '';
         return `
           <div class="verse-card ${hasMatch ? '' : 'verse-card-empty'}">
             <div class="verse-word-name">${escapeHtml(item.word.greek)}</div>
             <div class="verse-translation">${escapeHtml(item.word.english)}</div>
             ${relatedFormNote}
             <div class="verse-text">${verseHtml}</div>
+            ${englishDisplay}
             <div class="verse-reference">${escapeHtml(item.reference)}</div>
           </div>
         `;
       }).join('');
+      
+      // Load English translations asynchronously after rendering
+      setTimeout(() => {
+        document.querySelectorAll('.verse-text-english[data-book]').forEach(async (el) => {
+          const bookName = el.getAttribute('data-book');
+          const chapter = el.getAttribute('data-chapter');
+          const verse = el.getAttribute('data-verse');
+          const vocab = el.getAttribute('data-vocab');
+          
+          try {
+            const englishText = await fetchEnglishVerse(bookName, chapter, verse);
+            if (englishText) {
+              const englishWithHighlight = highlightEnglishWord(englishText, vocab);
+              const englishHtml = englishWithHighlight.split(/\*\*(.*?)\*\*/).map((part, idx) => idx % 2 === 1 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)).join('');
+              el.innerHTML = englishHtml;
+            } else {
+              el.innerHTML = '<span class="verse-english-failed">English translation unavailable</span>';
+            }
+          } catch (error) {
+            el.innerHTML = '<span class="verse-english-failed">English translation unavailable</span>';
+          }
+        });
+      }, 100);
     }).catch(error => {
       console.error('Error loading verses:', error);
       list.innerHTML = '<div class="verse-empty">Error loading verses. Please try again.</div>';
@@ -1753,7 +1855,7 @@
   }
 
   function beginVerseReview() {
-    selectedVerseWords = new Set(currentDeck.map(word => word.id));
+    selectedVerseWords = new Set();
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-verse').classList.add('active');
     document.getElementById('verse-title-text').textContent = getSectionHeaderTitle();
